@@ -1,0 +1,27 @@
+.todo-item {
+	margin-top: 5px;
+}
+
+.todo-item:first-child {
+	margin-top: 0;
+}
+
+.todo-item.incomplete {
+
+}
+
+.todo-item.complete {
+	background-color: #FFF3C3;
+}
+
+.actions {
+	margin-top: 5px;
+}
+
+.actions .btn {
+	margin-left: 5px;
+}
+
+.actions .btn:first-child {
+	margin-left: 0;
+}
