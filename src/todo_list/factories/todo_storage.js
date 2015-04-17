@@ -3,11 +3,11 @@
 
 	angular
 		.module('todoList')
-		.service('todoStorage', TodoStorage);
+		.factory('todoStorage', TodoStorage);
 
-	TodoStorage.$inject = ['uid', '$timeout'];
+	TodoStorage.$inject = ['uid'];
 
-	function TodoStorage(uid, $timeout) {
+	function TodoStorage(uid) {
 		var items = [],
 			indexedItems = {};
 

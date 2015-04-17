@@ -3,7 +3,7 @@
 
 	angular
 		.module('core')
-		.service('uid', Uid);
+		.factory('uid', Uid);
 
 	function Uid() {
 		var i = 0;
