@@ -11,28 +11,34 @@
 <body>
 	<div class="container">
 		<h1>Todos</h1>
-		<div ng-app="todos" ng-controller="TodoListController as todoCtrl">
-			<form class="form-inline" ng-submit="todoCtrl.add()">
+		<div id="todo-list" ng-controller="TodoListController as todos">
+			<form class="form-inline" ng-submit="todos.add()">
 				<div class="form-group">
-					<input class="form-control" autofocus type="text" ng-model="todoCtrl.currentText" />
+					<input class="form-control" autofocus type="text" ng-model="todos.currentText" />
 					<button class="btn btn-primary btn-md">Submit</button>
 				</div>
 			</form>
 			<div class="actions form-group">
-				<button type="button" class="btn btn-sm" ng-repeat="action in todoCtrl.actions" ng-class="'btn-' + action.type" ng-click="action.method()">{{  action.text }}</button>
+				<button type="button" class="btn btn-sm" ng-repeat="action in todos.actions" ng-class="'btn-' + action.type" ng-click="action.method()">{{  action.text }}</button>
 			</div>
-			<div class="todo-item" ng-repeat="item in todoCtrl.getVisibleTodos()" ng-class="todoCtrl.getItemClasses(item.id)">
-				<button class="btn btn-xs" ng-class="'btn-' + (item.complete ? 'success' : 'default')" ng-click="todoCtrl.toggleComplete(item.id)">
+			<div class="todo-item" ng-repeat="item in todos.getTodos()" ng-class="todos.getItemClasses(item.id)">
+				<button class="btn btn-xs" ng-class="'btn-' + (item.complete ? 'success' : 'default')" ng-click="todos.toggleComplete(item.id)">
 					<span class="glyphicon glyphicon-ok"></span>
 				</button>
-				<button class="btn btn-xs btn-danger" ng-click="todoCtrl.remove(item.id)">
+				<button class="btn btn-xs btn-danger" ng-click="todos.remove(item.id)">
 					<span class="glyphicon glyphicon-remove"></span>
 				</button>
 				<span ng-class="item.complete ? 'complete' : 'incomplete'">{{ item.text }}</span>
 			</div>
-			<h4 ng-show="todoCtrl.hasNoTodos()" ng-bind="todoCtrl.getEmptyText()"></h4>
+			<h4 ng-show="todos.hasNoTodos()" ng-bind="todos.getEmptyText()"></h4>
 		</div>	
 	</div>
+
+	<script type="text/javascript" src="src/core/module.js"></script>
+	<script type="text/javascript" src="src/core/services/uid.js"></script>
+	<script type="text/javascript" src="src/todo_list/module.js"></script>
+	<script type="text/javascript" src="src/todo_list/services/todo_storage.js"></script>
+	<script type="text/javascript" src="src/todo_list/controllers/todo_list.js"></script>
 	<script type="text/javascript" src="app.js"></script>
 </body>
 </html>
