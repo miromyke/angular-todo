@@ -100,7 +100,10 @@
 				classes,
 				animation;
 
-			classes = { complete: item.complete };
+			classes = {
+				complete: item.complete,
+				incomplete: !item.complete
+			};
 
 			if (item.isBeingRemoved) {
 				animation = 'bounceOutLeft';

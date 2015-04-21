@@ -4,13 +4,16 @@ var gulp = require('gulp'),
 gulp.task('default', function () {
 	return gulp.src([
 			'./src/**/*.module.js',
-			'./src/**/*.js',
-			'./app.js'
+			'./src/*/**/*.js',
+			'./src/app.js'
 		])
     	.pipe(concat('app.js'))
     	.pipe(gulp.dest('./build/'));
 });
 
 gulp.task('watch', function () {
-	return gulp.watch('./**/*.js', ['default']);
+	return gulp.watch([
+		'./**/*.js',
+		'./**/*.html'
+	], ['default']);
 });

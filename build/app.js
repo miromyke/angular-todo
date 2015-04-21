@@ -126,7 +126,9 @@
 				animation;
 
 			classes = {
-				complete: item.complete};
+				complete: item.complete,
+				incomplete: !item.complete
+			};
 
 			if (item.isBeingRemoved) {
 				animation = 'bounceOutLeft';
@@ -246,5 +248,5 @@
 (function () {
 	'use strict';
 
-	angular.bootstrap(document.getElementById('todo-list'), ['todoList']);	
+	angular.bootstrap(document.body, ['todoList']);	
 })();
