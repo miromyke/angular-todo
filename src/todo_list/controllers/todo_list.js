@@ -100,10 +100,7 @@
 				classes,
 				animation;
 
-			classes = {
-				complete: item.complete,
-				animated: true
-			};
+			classes = { complete: item.complete };
 
 			if (item.isBeingRemoved) {
 				animation = 'bounceOutLeft';
@@ -113,7 +110,10 @@
 				animation = 'flipOutX';
 			}
 
-			classes[animation] = true;
+			if (animation) {
+				classes.animated = true;
+				classes[animation] = true;
+			}
 
 			return classes;
 		}

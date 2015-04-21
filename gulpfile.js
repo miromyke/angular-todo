@@ -10,3 +10,7 @@ gulp.task('default', function () {
     	.pipe(concat('app.js'))
     	.pipe(gulp.dest('./build/'));
 });
+
+gulp.task('watch', function () {
+	return gulp.watch('./**/*.js', ['default']);
+});

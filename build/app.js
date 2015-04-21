@@ -6,7 +6,7 @@
 (function () {
 	'use strict';
 
-	angular.module('todoList', ['core']);
+	angular.module('todoList', ['core', 'ngAnimate']);
 })();
 (function () {
 	'use strict';
@@ -126,9 +126,7 @@
 				animation;
 
 			classes = {
-				complete: item.complete,
-				animated: true
-			};
+				complete: item.complete};
 
 			if (item.isBeingRemoved) {
 				animation = 'bounceOutLeft';
@@ -138,7 +136,10 @@
 				animation = 'flipOutX';
 			}
 
-			classes[animation] = true;
+			if (animation) {
+				classes.animated = true;
+				classes[animation] = true;
+			}
 
 			return classes;
 		}
