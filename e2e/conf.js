@@ -4,13 +4,17 @@ exports.config = {
 	allScriptsTimeout: 11000,
 	framework: 'jasmine2',
 	onPrepare: function () {
-	    browser.addMockModule('disableNgAnimate', disableNgAnimate);
+		browser.addMockModule('disableNgAnimate', disableNgAnimate);
 
-	    function disableNgAnimate() {
-	      angular.module('disableNgAnimate', []).run(['$animate', function($animate) {
-	        $animate.enabled(false);
-	      }]);
-	    };
+		function disableNgAnimate() {
+			angular.module('disableNgAnimate', []).run(disableAnimation);
+
+		 	disableAnimation.$inject = ['$animate'];
+
+			function disableAnimation($animate) {
+		 		$animate.enabled(false);
+			}
+		};
 	},
 	jasmineNodeOpts: {
 		defaultTimeoutInterval: 60000,

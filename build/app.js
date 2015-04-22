@@ -1,12 +1,27 @@
 (function () {
 	'use strict';
 
+	angular.module('core', []);
+})();
+(function () {
+	'use strict';
+
 	angular.module('todoList', ['core', 'ngAnimate']);
 })();
 (function () {
 	'use strict';
 
-	angular.module('core', []);
+	angular
+		.module('core')
+		.factory('uid', Uid);
+
+	function Uid() {
+		var i = 0;
+
+		return function () {
+			return i++;
+		}
+	}
 })();
 (function () {
 	'use strict';
@@ -52,10 +67,10 @@
 
 		vm.getEmptyText = getEmptyText;
 
-		vm.actions = [
-			{ type: 'default', text: 'Show all', 		method: vm.showAll },
-			{ type: 'success', text: 'Show complete', 	method: vm.showComplete },
-			{ type: 'warning', text: 'Show incomplete', method: vm.showIncomplete }
+		vm.tabs = [
+			{ action: 'all', 		type: 'default', text: 'Show all', 			method: vm.showAll },
+			{ action: 'complete', 	type: 'success', text: 'Show complete', 	method: vm.showComplete },
+			{ action: 'incomplete', type: 'warning', text: 'Show incomplete', 	method: vm.showIncomplete }
 		];
 
 		function add() {
@@ -186,21 +201,6 @@
 
 		function getAll() {
 			return items;
-		}
-	}
-})();
-(function () {
-	'use strict';
-
-	angular
-		.module('core')
-		.factory('uid', Uid);
-
-	function Uid() {
-		var i = 0;
-
-		return function () {
-			return i++;
 		}
 	}
 })();

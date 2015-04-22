@@ -19,7 +19,7 @@
 				</div>
 			</form>
 			<div class="actions form-group">
-				<button type="button" class="btn btn-sm" ng-repeat="action in todos.actions" ng-class="'btn-' + action.type" ng-click="action.method()">{{  action.text }}</button>
+				<button type="button" class="btn btn-sm" role="show-{{ tab.action }}" ng-repeat="tab in todos.tabs" ng-class="'btn-' + tab.type" ng-click="tab.method()">{{  tab.text }}</button>
 			</div>
 			<div class="todo-item" ng-repeat="item in todos.getTodos()" ng-class="todos.getItemClasses(item.id)">
 				<button role="toggle" class="btn btn-xs" ng-class="'btn-' + (item.complete ? 'success' : 'default')" ng-click="todos.toggleComplete(item.id)">

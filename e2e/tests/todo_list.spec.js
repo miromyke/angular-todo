@@ -3,32 +3,26 @@ describe('Todo App', function () {
 
 	browser.get('http://localhost:8000');
 
-	it('creates/removes todos', function () {
-		var todos,
-			todo,
-			text = 'Do homework',
-			removeBtn;
+	var TODO_TEXT = 'Do homework';
 
-		createTodo(text);
+	beforeEach(function () {
+		showAllTodos();
 
-		todos = getTodos();
+		removeAllTodos();
 
-		todo = todos.get(0);
+		createTodo(TODO_TEXT);
+	});
 
-		expect(todo.getText()).toEqual(text);
+	it('creates todo', function () {
+		var todo;
 
-		removeBtn = todo.element(by.css('[role="remove"]'));
+		todo = getTodos().get(0);
 
-		removeBtn.click();
-
-		expect(getTodos().count()).toEqual(0);
+		expect(todo.getText()).toEqual(TODO_TEXT);
 	});
 
 	it('clears up input field when todo is created', function () {
-		var todo,
-			input;
-
-		createTodo('Do some fun stuff');
+		var input;
 
 		input = element(by.model('todos.currentText'));
 
@@ -36,55 +30,91 @@ describe('Todo App', function () {
 	});
 
 	describe('todo', function () {
+		var TODO_TEXT = 'Do history';
+
+		beforeEach(function () {
+			showAllTodos();
+
+			removeAllTodos();
+
+			createTodo(TODO_TEXT);
+		});
+
 		it('is incomplete initially', function () {
-			var todo,
-				todos;
+			var todo;
 
-			createTodo('Do history');
-
-			todos = getTodos();
-
-			todo = todos.get(0);
+			todo = getTodos().get(0);
 
 			expect(hasClass(todo, 'incomplete')).toBe(true);
 		});
 
-		it('can be toggled between complete/incomplete states', function () {
-			var todo,
-				todos,
-				toggleBtn;
+		it('can be toggled to complete/incomplete states', function () {
+			var todo;
 
-			createTodo('Do math');
+			todo = getTodos().get(0);
 
-			todos = getTodos();
-
-			todo = todos.get(0);
-
-			toggleBtn = todo.element(by.css('[role="toggle"]'));
-
-			toggleBtn.click();
+			toggleTodo(todo);
 			expect(hasClass(todo, 'complete')).toBe(true);
 
-			toggleBtn.click();
+			toggleTodo(todo);
 			expect(hasClass(todo, 'incomplete')).toBe(true);
 		});
-	});
 
-	xdescribe('"Show all" tab', function () {
-		it('shows all todos', function () {
+		it('can be removed', function () {
+			var todo = getTodos().get(0);
 
+			removeTodo(todo);
+			expect(getTodos().count()).toEqual(0);
 		});
 	});
 
-	xdescribe('"Show complete" tab', function () {
-		it('shows complete todos', function () {
+	describe('tabs', function () {
+		var FIRST_TODO_TEXT = 'Do math',
+			SECND_TODO_TEXT = 'Do math again',
+			todos = getTodos();
 
+		beforeEach(function () {
+			showAllTodos();
+			removeAllTodos();
+
+			createTodo(FIRST_TODO_TEXT);
+			createTodo(SECND_TODO_TEXT);
 		});
-	});
 
-	xdescribe('"Show incomplete" tab', function () {
-		it('shows incomplete todos', function () {
+		it('shows all todos when on "Show all" tab', function () {
+			var todo;
 
+			showAllTodos();
+
+			todo = todos.get(0);
+			toggleTodo(todo);
+			
+			expect(todos.get(1).getText()).toEqual(FIRST_TODO_TEXT);
+			expect(todos.get(0).getText()).toEqual(SECND_TODO_TEXT);
+		});
+
+		it('shows complete todos when on "Show complete" tab', function () {
+			var todo;
+
+			todo = todos.get(0);
+			toggleTodo(todo);
+
+			showComplete();
+
+			expect(todos.count()).toEqual(1);
+			expect(todos.get(0).getText()).toEqual(SECND_TODO_TEXT);
+		});
+
+		it('shows incomplete todos when on "Show incomplete" tab', function () {
+			var todo;
+
+			todo = todos.get(0);
+			toggleTodo(todo);
+
+			showIncomplete();
+
+			expect(todos.count()).toEqual(1);
+			expect(todos.get(0).getText()).toEqual(FIRST_TODO_TEXT);
 		});
 	});
 
@@ -94,6 +124,48 @@ describe('Todo App', function () {
 		input.sendKeys(text);
 
 		input.sendKeys(protractor.Key.ENTER);
+	}
+
+	function toggleTodo(todo) {
+		var toggleBtn = todo.element(by.css('[role="toggle"]'));
+
+		toggleBtn.click();
+	}
+
+	function removeTodo(todo) {
+		var removeBtn;
+
+		removeBtn = todo.element(by.css('[role="remove"]'));
+
+		removeBtn.click();
+	}
+
+	function removeAllTodos() {
+		var todos = getTodos();
+
+		todos.count().then(function (count) {
+			if (count) {
+				removeTodo(todos.get(0));
+
+				removeAllTodos();
+			}
+		});
+	}
+
+	function getButtons() {
+		return element.all(by.repeater('tab in todos.tabs'));
+	}
+
+	function showAllTodos() {
+		getButtons().get(0).click();
+	}
+
+	function showComplete() {
+		getButtons().get(1).click();
+	}
+
+	function showIncomplete() {
+		getButtons().get(2).click();
 	}
 
 	function getTodos() {

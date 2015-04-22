@@ -42,10 +42,10 @@
 
 		vm.getEmptyText = getEmptyText;
 
-		vm.actions = [
-			{ type: 'default', text: 'Show all', 		method: vm.showAll },
-			{ type: 'success', text: 'Show complete', 	method: vm.showComplete },
-			{ type: 'warning', text: 'Show incomplete', method: vm.showIncomplete }
+		vm.tabs = [
+			{ action: 'all', 		type: 'default', text: 'Show all', 			method: vm.showAll },
+			{ action: 'complete', 	type: 'success', text: 'Show complete', 	method: vm.showComplete },
+			{ action: 'incomplete', type: 'warning', text: 'Show incomplete', 	method: vm.showIncomplete }
 		];
 
 		function add() {
