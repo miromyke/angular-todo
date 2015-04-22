@@ -1,3 +1,5 @@
+@import '../vendor/animate.less/animate.less';
+
 .todo-item {
 	margin-top: 5px;
 }
@@ -12,6 +14,22 @@
 
 .todo-item.complete {
 	background-color: #FFF3C3;
+}
+
+.todo-item.ng-leave {
+	.animated;
+}
+
+.todo-item.ng-leave.ng-leave-active {
+	.bounceOutRight;
+}
+
+.todo-item.ng-enter {
+	.animated;
+}
+
+.todo-item.ng-enter.ng-enter-active {
+	.bounceInLeft;
 }
 
 .actions {

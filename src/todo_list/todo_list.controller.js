@@ -5,9 +5,9 @@
 		.module('todoList')
 		.controller('TodoListController', TodoListController);
 
-	TodoListController.$inject = ['todoStorage', '$timeout'];
+	TodoListController.$inject = ['todoStorage'];
 
-	function TodoListController(todoStorage, $timeout) {
+	function TodoListController(todoStorage) {
 		var vm = this;
 
 		vm.currentText = '';
@@ -56,69 +56,28 @@
 
 			item = todoStorage.create(text);
 
-			item.isBeingCreated = true;
-
-			$timeout(function () {
-				delete item.isBeingCreated;
-			}, 500);
-
 			vm.currentText = '';
 		}
 
 		function remove(id) {
 			var item = todoStorage.get(id);
 
-			item.isBeingRemoved = true;
-
-			$timeout(function () {
-				todoStorage.remove(id);
-			}, 500);
+			todoStorage.remove(id);
 		}
 
 		function toggleComplete(id) {
-			var item = todoStorage.get(id),
-				mode = vm.displayMode,
-				isComplete = !item.complete,
-				willBeTransferred;
-
-			willBeTransferred = (mode === 'incomplete' && isComplete) || (mode === 'complete' && !isComplete);
-
-			if (willBeTransferred) {
-				item.isBeingTransferred = true;
-
-				$timeout(function () {
-					item.complete = isComplete;
-					delete item.isBeingTransferred;
-				}, 800);
-			} else {
-				item.complete = isComplete;
-			}
+			var item = todoStorage.get(id);
+			
+			item.complete = !item.complete;
 		}
 
 		function getItemClasses(id) {
-			var item = todoStorage.get(id),
-				classes,
-				animation;
+			var item = todoStorage.get(id);
 
-			classes = {
+			return {
 				complete: item.complete,
 				incomplete: !item.complete
 			};
-
-			if (item.isBeingRemoved) {
-				animation = 'bounceOutLeft';
-			} else if (item.isBeingCreated) {
-				animation = 'flipInX';
-			} else if (item.isBeingTransferred) {
-				animation = 'flipOutX';
-			}
-
-			if (animation) {
-				classes.animated = true;
-				classes[animation] = true;
-			}
-
-			return classes;
 		}
 
 		function getTodos() {

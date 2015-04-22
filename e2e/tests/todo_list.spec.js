@@ -3,7 +3,7 @@ describe('Todo App', function () {
 
 	browser.get('http://localhost:8000');
 
-	it('creates/removes todos', function (done) {
+	it('creates/removes todos', function () {
 		var todos,
 			todo,
 			text = 'Do homework',
@@ -21,13 +21,18 @@ describe('Todo App', function () {
 
 		removeBtn.click();
 
-		/**
-		 * @todo Remove todos instantly and animate it using ngAnimate instead of delayed deletion
-		 */
-		setTimeout(function () {
-			expect(getTodos().count()).toEqual(0);
-			done();
-		}, 1000);
+		expect(getTodos().count()).toEqual(0);
+	});
+
+	it('clears up input field when todo is created', function () {
+		var todo,
+			input;
+
+		createTodo('Do some fun stuff');
+
+		input = element(by.model('todos.currentText'));
+
+		expect(input.getAttribute('value')).toEqual('');
 	});
 
 	describe('todo', function () {
@@ -44,26 +49,24 @@ describe('Todo App', function () {
 			expect(hasClass(todo, 'incomplete')).toBe(true);
 		});
 
-		describe('complete state', function () {
-			it('can be toggled', function () {
-				var todo,
-					todos,
-					toggleBtn;
+		it('can be toggled between complete/incomplete states', function () {
+			var todo,
+				todos,
+				toggleBtn;
 
-				createTodo('Do math');
+			createTodo('Do math');
 
-				todos = getTodos();
+			todos = getTodos();
 
-				todo = todos.get(0);
+			todo = todos.get(0);
 
-				toggleBtn = todo.element(by.css('[role="toggle"]'));
+			toggleBtn = todo.element(by.css('[role="toggle"]'));
 
-				toggleBtn.click();
-				expect(hasClass(todo, 'complete')).toBe(true);
+			toggleBtn.click();
+			expect(hasClass(todo, 'complete')).toBe(true);
 
-				toggleBtn.click();
-				expect(hasClass(todo, 'incomplete')).toBe(true);
-			});
+			toggleBtn.click();
+			expect(hasClass(todo, 'incomplete')).toBe(true);
 		});
 	});
 
@@ -87,8 +90,6 @@ describe('Todo App', function () {
 
 	function createTodo(text) {
 		var input = element(by.model('todos.currentText'));
-
-		input.clear();
 
 		input.sendKeys(text);
 
