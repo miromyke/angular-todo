@@ -6,8 +6,8 @@ gulp.task('default', ['build', 'less']);
 
 gulp.task('watch', function () {
 	gulp.watch([
-		'./css/**/*.less',
-		'./css/**/*.css'
+		'./less/**/*.less',
+		'./less/**/*.css'
 	], ['less']);
 
 	gulp.watch('./src/**/*.js', ['build'])
@@ -25,7 +25,7 @@ gulp.task('build', function () {
 
 gulp.task('less', function () {
 	return gulp
-		.src('./css/app.less')
+		.src('./less/app.less')
 		.pipe(less())
 		.pipe(concat('app.css'))
 		.pipe(gulp.dest('./build'));
