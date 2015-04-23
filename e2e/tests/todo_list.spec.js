@@ -1,19 +1,14 @@
 describe('Todo App', function () {
 	'use strict';
 
-	browser.get('http://localhost:8000');
-
 	var TODO_TEXT 		= 'Do homework',
 		FIRST_TODO_TEXT = 'Wash dishes',
-		SECND_TODO_TEXT = 'Become a ninja';
+		SECND_TODO_TEXT = 'Become a ninja',
+		APP_ROOT_URL 	= 'http://localhost:8000';
 
-	beforeEach(function () {
-		showAllTodos();
+	browser.get(APP_ROOT_URL);
 
-		removeAllTodos();
-
-		createTodo(TODO_TEXT);
-	});
+	beforeEach(bootAndFullfill);
 
 	it('creates todo', function () {
 		var todo;
@@ -31,14 +26,24 @@ describe('Todo App', function () {
 		expect(input.getAttribute('value')).toEqual('');
 	});
 
+	it('saves it\'s state within page reloads', function () {
+		var todos = getTodos();
+
+		createTodo('one more tiny little task');
+
+		browser.get(APP_ROOT_URL);
+
+		expect(todos.count()).toEqual(2);
+		expect(todos.get(0).getText()).toEqual('one more tiny little task');
+
+		removeTodo(todos.get(0));
+		browser.get(APP_ROOT_URL);
+
+		expect(todos.get(0).getText()).toEqual(TODO_TEXT);
+	});
+
 	describe('todo', function () {
-		beforeEach(function () {
-			showAllTodos();
-
-			removeAllTodos();
-
-			createTodo(TODO_TEXT);
-		});
+		beforeEach(bootAndFullfill);
 
 		it('is incomplete initially', function () {
 			var todo;
@@ -115,6 +120,14 @@ describe('Todo App', function () {
 			expect(todos.get(0).getText()).toEqual(FIRST_TODO_TEXT);
 		});
 	});
+
+	function bootAndFullfill() {
+		showAllTodos();
+
+		removeAllTodos();
+
+		createTodo(TODO_TEXT);
+	}
 
 	function createTodo(text) {
 		var input = element(by.model('todos.currentText'));
