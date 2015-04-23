@@ -3,7 +3,9 @@ describe('Todo App', function () {
 
 	browser.get('http://localhost:8000');
 
-	var TODO_TEXT = 'Do homework';
+	var TODO_TEXT 		= 'Do homework',
+		FIRST_TODO_TEXT = 'Wash dishes',
+		SECND_TODO_TEXT = 'Become a ninja';
 
 	beforeEach(function () {
 		showAllTodos();
@@ -30,8 +32,6 @@ describe('Todo App', function () {
 	});
 
 	describe('todo', function () {
-		var TODO_TEXT = 'Do history';
-
 		beforeEach(function () {
 			showAllTodos();
 
@@ -69,9 +69,7 @@ describe('Todo App', function () {
 	});
 
 	describe('tabs', function () {
-		var FIRST_TODO_TEXT = 'Do math',
-			SECND_TODO_TEXT = 'Do math again',
-			todos = getTodos();
+		var todos = getTodos();
 
 		beforeEach(function () {
 			showAllTodos();
