@@ -1,15 +1,18 @@
-@import '../vendor/animate.less/animate.less';
+@import "bootstrap.less";
+@import "../vendor/animate.less/animate.less";
 
 .todo-item {
 	margin-top: 5px;
+
+	.clearfix;
 }
 
 .todo-item:first-child {
 	margin-top: 0;
 }
 
-.todo-item.incomplete {
-
+.todo-item .btn-remove-todo {
+	float: right;
 }
 
 .todo-item.complete {

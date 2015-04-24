@@ -5,7 +5,6 @@
 	<script type="text/javascript" src="vendor/underscore/underscore.js"></script>
 	<script type="text/javascript" src="vendor/angular/angular.js"></script>
 	<script type="text/javascript" src="vendor/angular-animate/angular-animate.js"></script>
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/dist/css/bootstrap.css">
 	<link rel="stylesheet" href="build/app.css">
 </head>
 <body ng-cloak>
@@ -25,10 +24,10 @@
 				<button role="toggle" class="btn btn-xs" ng-class="'btn-' + (todo.complete ? 'success' : 'default')" ng-click="todoApp.toggleComplete(todo.id)">
 					<span class="glyphicon glyphicon-ok"></span>
 				</button>
-				<button role="remove" class="btn btn-xs btn-danger" ng-click="todoApp.remove(todo.id)">
+				<span ng-class="todo.complete ? 'complete' : 'incomplete'">{{ todo.text }}</span>
+				<button role="remove" class="btn btn-xs btn-danger btn-remove-todo" ng-click="todoApp.remove(todo.id)">
 					<span class="glyphicon glyphicon-remove"></span>
 				</button>
-				<span ng-class="todo.complete ? 'complete' : 'incomplete'">{{ todo.text }}</span>
 			</div>
 			<h4 ng-show="todoApp.hasNoVisibleTodos()" ng-bind="todoApp.getEmptyText()"></h4>
 		</div>
