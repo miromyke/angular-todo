@@ -26,11 +26,13 @@ describe('Todo App', function () {
 		var todos = getTodos();
 
 		createTodo('one more tiny little task');
+		toggleTodo(todos.get(0));
 
 		browser.get(APP_ROOT_URL);
 
 		expect(todos.count()).toEqual(2);
 		expect(todos.get(0).getText()).toEqual('one more tiny little task');
+		expect(hasClass(todos.get(0), 'complete')).toBe(true);
 
 		removeTodo(todos.get(0));
 		browser.get(APP_ROOT_URL);
