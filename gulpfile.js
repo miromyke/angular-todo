@@ -39,7 +39,7 @@ gulp.task('e2e', function (done) {
 		webdriver,
 		protractor;
 
-	server = exec('python -m http.server');
+	server = exec('python ' + getServerParams());
 	webdriver = exec('webdriver-manager start');
 	protractor = exec('protractor e2e/conf.js');
 
@@ -47,13 +47,24 @@ gulp.task('e2e', function (done) {
 		process.stdout.write(buffer.toString());
 	});
 
-	protractor.once('exit', function () {
+	protractor.once('close', function () {
 		server.kill();
 		webdriver.kill();
-	});
 
-	protractor.once('close', function () {
 		done();
+
 		process.exit(0);
 	});
 });
+
+function getServerParams() {
+	var params = '-m ';
+
+	if (/^win/.test(process.platform)) {
+		params += 'http.server';
+	} else {
+		params += 'SimpleHTTPServer';
+	}
+
+	return params;
+}
