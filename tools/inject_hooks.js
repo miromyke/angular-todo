@@ -13,5 +13,5 @@ commands.split('\n').forEach(function (cmd) {
 	hook += 'exec(\'' + cmd + '\');';
 });
 
-fs.writeFileSync('.git/hooks/pre-commit', hook);
-exec('chmod +x .git/hooks/pre-commit');
+fs.writeFileSync(HOOKS + '/pre-commit', hook);
+exec('chmod +x ' + HOOKS + '/pre-commit');
