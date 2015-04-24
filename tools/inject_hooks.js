@@ -5,13 +5,11 @@ var fs = require('fs'),
 	HOOKS = '.git/hooks';
 
 hook = '#!/usr/bin/node\n' +
-'var exec = require(\'child_process\').execSync;\n';
+'var child = require(\'child_process\').exec(\'gulp pre-commit\');\n' +
+'child.stdout.on(\'data\', function (buffer) {\n' +
+'\tprocess.stdout.write(buffer.toString());\n' +
+'});';
 
-commands = fs.readFileSync('.pre-commit', 'utf-8');
-
-commands.split('\n').forEach(function (cmd) {
-	hook += 'exec(\'' + cmd + '\');';
-});
 
 fs.writeFileSync(HOOKS + '/pre-commit', hook);
 exec('chmod +x ' + HOOKS + '/pre-commit');
