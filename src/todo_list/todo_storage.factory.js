@@ -20,7 +20,9 @@
 			todos: todos,
 			create: create,
 			remove: remove,
-			get: get
+			get: get,
+			store: store,
+			toggleTodo: toggleTodo
 		}
 
 		function get(id) {
@@ -45,7 +47,7 @@
 
 			indexedItems[id] = item;
 
-			store(todos);
+			store();
 
 			return item;
 		}
@@ -57,7 +59,7 @@
 
 			delete indexedItems[id];
 
-			store(todos);
+			store();
 		}
 
 		function getComplete() {
@@ -72,14 +74,22 @@
 			});
 		}
 
+		function toggleTodo(id) {
+			var todo = indexedItems[id];
+
+			todo.complete = !todo.complete;
+
+			store();
+		}
+
 		function fetch() {
 			var data = localStorage.getItem('todoAppItems');
 
 			return data ? angular.fromJson(data) : [];
 		}
 
-		function store(data) {
-			localStorage.setItem('todoAppItems', angular.toJson(data));
+		function store() {
+			localStorage.setItem('todoAppItems', angular.toJson(todos));
 		}
 
 		function getMaxId() {

@@ -20,7 +20,7 @@
 
 		vm.remove = remove;
 
-		vm.toggleComplete = toggleComplete;
+		vm.toggleComplete = todoStorage.toggleTodo;
 
 		vm.getItemClasses = getItemClasses;
 
@@ -65,12 +65,6 @@
 			var item = todoStorage.get(id);
 
 			todoStorage.remove(id);
-		}
-
-		function toggleComplete(id) {
-			var item = todoStorage.get(id);
-			
-			item.complete = !item.complete;
 		}
 
 		function getItemClasses(id) {
