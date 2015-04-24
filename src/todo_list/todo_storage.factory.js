@@ -5,7 +5,7 @@
 		.module('todoList')
 		.factory('todoStorage', GetTodoStorage);
 
-	TodoStorage.$inject = ['uid'];
+	GetTodoStorage.$inject = ['uid'];
 
 	function GetTodoStorage(uid) {
 		var todos = fetch(),
