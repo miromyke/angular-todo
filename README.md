@@ -1,6 +1,6 @@
 ## Simple Todo application on Angular
 
-#### To launch an application, simply open "index.html" in your browser.
+#### To launch an application, execute `npm i && npm start` and simply open "index.html" in your browser.
 
 #### To launch e2e tests:
 

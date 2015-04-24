@@ -6,9 +6,9 @@
 		.service('uid', Uid);
 
 	function Uid() {
-		this.getIdGenerator = function (from) {
+		this.createGenerator = function (from) {
 			return function () {
-				return from++;
+				return ++from;
 			}
 		}
 	}

@@ -10,11 +10,13 @@
 	function TodoListController(todoStorage) {
 		var vm = this;
 
+		vm.todos = todoStorage.todos;
+
 		vm.currentText = '';
 
 		vm.displayMode = 'all';
 
-		vm.add = add;
+		vm.create = create;
 
 		vm.remove = remove;
 
@@ -22,10 +24,10 @@
 
 		vm.getItemClasses = getItemClasses;
 
-		vm.getTodos = getTodos;
+		vm.isTodoVisible = isTodoVisible;
 
-		vm.hasNoTodos = function () {
-			return !vm.getTodos().length;
+		vm.hasNoVisibleTodos = function () {
+			return !getVisibleTodos().length;
 		};
 
 		vm.showAll = function () {
@@ -43,12 +45,12 @@
 		vm.getEmptyText = getEmptyText;
 
 		vm.tabs = [
-			{ action: 'all', 		type: 'default', text: 'Show all', 			method: vm.showAll },
-			{ action: 'complete', 	type: 'success', text: 'Show complete', 	method: vm.showComplete },
-			{ action: 'incomplete', type: 'warning', text: 'Show incomplete', 	method: vm.showIncomplete }
+			{ action: 'all', 		type: 'default', text: 'Show all', 			method: 'showAll' },
+			{ action: 'complete', 	type: 'success', text: 'Show complete', 	method: 'showComplete' },
+			{ action: 'incomplete', type: 'warning', text: 'Show incomplete', 	method: 'showIncomplete' }
 		];
 
-		function add() {
+		function create() {
 			var text = vm.currentText,
 				item;
 
@@ -80,30 +82,39 @@
 			};
 		}
 
-		function getTodos() {
-			var todos = todoStorage.getAll();
-
-			switch (vm.displayMode) {
-				case 'complete':
-					todos = todoStorage.getComplete();
-					break;
-
-				case 'incomplete':
-					todos = todoStorage.getIncomplete();
-					break;
-			}
-
-			return todos;
-		}
-
 		function getEmptyText() {
-			var text = 'No ' + this.displayMode + ' todos';
+			var text = 'No ' + vm.displayMode + ' todos';
 
-			if (this.displayMode === 'all') {
+			if (vm.displayMode === 'all') {
 				text = 'No todos yet';
 			}
 
 			return text;
+		}
+
+		function getVisibleTodos() {
+			return vm.todos.filter(isTodoVisible);
+		}
+
+		function isTodoVisible(todo) {
+			var display = vm.displayMode,
+				showAll = display === 'all',
+				showComplete,
+				showIncomplete,
+				isComplete,
+				todoFits;
+
+			if (showAll) {
+				return true;
+			}
+
+			isComplete 		= todo.complete;
+			showComplete 	= display === 'complete';
+			showIncomplete 	= display === 'incomplete';
+
+			todoFits = (isComplete && showComplete) || (!isComplete && showIncomplete);
+
+			return todoFits;
 		}
 	}
 })();

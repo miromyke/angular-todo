@@ -3,21 +3,21 @@
 
 	angular
 		.module('todoList')
-		.factory('todoStorage', TodoStorage);
+		.factory('todoStorage', GetTodoStorage);
 
 	TodoStorage.$inject = ['uid'];
 
-	function TodoStorage(uid) {
-		var items = getAll(),
-			indexedItems = items.length ? _.indexBy(items, 'id') : {},
-			getUid;
+	function GetTodoStorage(uid) {
+		var todos = fetch(),
+			indexedItems = todos.length ? _.indexBy(todos, 'id') : {},
+			generateId;
 
-		getUid = uid.getIdGenerator(getMaxId());
+		generateId = uid.createGenerator(getMaxId());
 
 		return {
 			getComplete: getComplete,
 			getIncomplete: getIncomplete,
-			getAll: getAll,
+			todos: todos,
 			create: create,
 			remove: remove,
 			get: get
@@ -33,7 +33,7 @@
 
 			if (!text) return;
 
-			id = getUid();
+			id = generateId();
 
 			item = {
 				id: id,
@@ -41,11 +41,11 @@
 				complete: false
 			};
 
-			items.unshift(item);
+			todos.unshift(item);
 
 			indexedItems[id] = item;
 
-			store(items);
+			store(todos);
 
 			return item;
 		}
@@ -53,55 +53,39 @@
 		function remove(id) {
 			var item = indexedItems[id];
 
-			items.splice(items.indexOf(item), 1);
-
-			store(items);
+			todos.splice(todos.indexOf(item), 1);
 
 			delete indexedItems[id];
+
+			store(todos);
 		}
 
 		function getComplete() {
-			return items.filter(function (item) {
+			return todos.filter(function (item) {
 				return item.complete;
 			});
 		}
 
 		function getIncomplete() {
-			return items.filter(function (item) {
+			return todos.filter(function (item) {
 				return !item.complete;
 			});
 		}
 
-		function getAll() {
-			var items = fetch();
-
-			return items ? clearNgData(JSON.parse(items)) : [];
-		}
-
 		function fetch() {
-			return localStorage.getItem('todoApp');
+			var data = localStorage.getItem('todoAppItems');
+
+			return data ? angular.fromJson(data) : [];
 		}
 
 		function store(data) {
-			localStorage.setItem('todoApp', JSON.stringify(data));
+			localStorage.setItem('todoAppItems', angular.toJson(data));
 		}
 
 		function getMaxId() {
-			var keys = Object.keys(indexedItems);
+			var ids = Object.keys(indexedItems);
 
-			return Math.max.apply(Math, keys.length ? keys : [0]);
-		}
-
-		function clearNgData(items) {
-			return items.map(function (item) {
-				var keys = Object.keys(item);
-
-				keys.forEach(function (key) {
-					if (key.charAt(0) === '$$') {
-						delete item[key];
-					}
-				});
-			});
+			return Math.max.apply(Math, ids.length ? ids : [0]);
 		}
 	}
 })();

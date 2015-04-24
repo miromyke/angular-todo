@@ -11,26 +11,26 @@
 <body ng-cloak>
 	<div class="container">
 		<h1>Todos</h1>
-		<div ng-controller="TodoListController as todos">
-			<form class="form-inline" ng-submit="todos.add()">
+		<div ng-controller="TodoListController as todoApp">
+			<form class="form-inline" ng-submit="todoApp.create()">
 				<div class="form-group">
-					<input class="form-control" autofocus type="text" ng-model="todos.currentText" />
+					<input class="form-control" autofocus type="text" ng-model="todoApp.currentText" />
 					<button class="btn btn-primary btn-md">Submit</button>
 				</div>
 			</form>
 			<div class="actions form-group">
-				<button type="button" class="btn btn-sm" role="show-{{ tab.action }}" ng-repeat="tab in todos.tabs" ng-class="'btn-' + tab.type" ng-click="tab.method()">{{  tab.text }}</button>
+				<button type="button" class="btn btn-sm" role="show-{{ tab.action }}" ng-repeat="tab in todoApp.tabs" ng-class="'btn-' + tab.type" ng-click="todoApp[tab.method]()">{{  tab.text }}</button>
 			</div>
-			<div class="todo-item" ng-repeat="item in todos.getTodos()" ng-class="todos.getItemClasses(item.id)">
-				<button role="toggle" class="btn btn-xs" ng-class="'btn-' + (item.complete ? 'success' : 'default')" ng-click="todos.toggleComplete(item.id)">
+			<div class="todo-item" ng-repeat="todo in todoApp.todos | filter:todoApp.isTodoVisible" ng-class="todoApp.getItemClasses(todo.id)">
+				<button role="toggle" class="btn btn-xs" ng-class="'btn-' + (todo.complete ? 'success' : 'default')" ng-click="todoApp.toggleComplete(todo.id)">
 					<span class="glyphicon glyphicon-ok"></span>
 				</button>
-				<button role="remove" class="btn btn-xs btn-danger" ng-click="todos.remove(item.id)">
+				<button role="remove" class="btn btn-xs btn-danger" ng-click="todoApp.remove(todo.id)">
 					<span class="glyphicon glyphicon-remove"></span>
 				</button>
-				<span ng-class="item.complete ? 'complete' : 'incomplete'">{{ item.text }}</span>
+				<span ng-class="todo.complete ? 'complete' : 'incomplete'">{{ todo.text }}</span>
 			</div>
-			<h4 ng-show="todos.hasNoTodos()" ng-bind="todos.getEmptyText()"></h4>
+			<h4 ng-show="todoApp.hasNoVisibleTodos()" ng-bind="todoApp.getEmptyText()"></h4>
 		</div>
 	</div>
 	<script type="text/javascript" src="build/app.js"></script>

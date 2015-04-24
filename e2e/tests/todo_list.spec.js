@@ -19,11 +19,7 @@ describe('Todo App', function () {
 	});
 
 	it('clears up input field when todo is created', function () {
-		var input;
-
-		input = element(by.model('todos.currentText'));
-
-		expect(input.getAttribute('value')).toEqual('');
+		expect(getInput().getAttribute('value')).toEqual('');
 	});
 
 	it('saves it\'s state within page reloads', function () {
@@ -130,7 +126,7 @@ describe('Todo App', function () {
 	}
 
 	function createTodo(text) {
-		var input = element(by.model('todos.currentText'));
+		var input = getInput();
 
 		input.sendKeys(text);
 
@@ -164,7 +160,7 @@ describe('Todo App', function () {
 	}
 
 	function getButtons() {
-		return element.all(by.repeater('tab in todos.tabs'));
+		return element.all(by.repeater('tab in todoApp.tabs'));
 	}
 
 	function showAllTodos() {
@@ -180,7 +176,11 @@ describe('Todo App', function () {
 	}
 
 	function getTodos() {
-		return element.all(by.repeater('item in todos.getTodos()'));
+		return element.all(by.repeater('todo in todoApp.todos'));
+	}
+
+	function getInput() {
+		return element(by.model('todoApp.currentText'));
 	}
 
 	function hasClass(element, klass) {
