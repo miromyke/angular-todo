@@ -1,9 +1,12 @@
 {
   "name": "angular-todos",
   "devDependencies": {
+    "express": "^4.12.3",
     "gulp": "^3.8.11",
     "gulp-concat": "^2.5.2",
-    "gulp-less": "^3.0.3"
+    "gulp-less": "^3.0.3",
+    "multer": "^0.1.8",
+    "serve-static": "^1.9.2"
   },
   "scripts": {
     "start": "gulp watch",
