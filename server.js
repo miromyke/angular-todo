@@ -11,18 +11,11 @@ app = express();
 app.use(multer({
 	dest: './uploads/',
 	onFileUploadComplete: function (file) {
-		console.log('his name', file.name);
 		console.log('File', file.originalname, ', of size', file.size, ', uploaded to', file.path);
 	},
 
 	onUploadStart: function (fieldname, filename) {
 		console.log('Upload of file', filename, ' has been started');
-	},
-
-	rename: function (fieldname, filename) {
-		var separator = '__';
-
-		return [fieldname, filename, Date.now()].join(separator);
 	}
 }));
 
@@ -34,8 +27,6 @@ app.post('/todo', function (req, res) {
 	files = files.map(function (file) {
 		return file.name;
 	});
-	
-	console.log('files', JSON.stringify(files));
 
 	res.end(JSON.stringify(files));
 });

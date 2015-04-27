@@ -3,6 +3,8 @@
 <head>
 	<title>Todos</title>
 	<script type="text/javascript" src="vendor/underscore/underscore.js"></script>
+	<script type="text/javascript" src="vendor/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="vendor/jquery-form/jquery.form.js"></script>
 	<script type="text/javascript" src="vendor/angular/angular.js"></script>
 	<script type="text/javascript" src="vendor/angular-animate/angular-animate.js"></script>
 	<link rel="stylesheet" href="build/app.css">
@@ -25,6 +27,7 @@
 					<span class="glyphicon glyphicon-ok"></span>
 				</button>
 				<span ng-class="todo.complete ? 'complete' : 'incomplete'">{{ todo.text }}</span>
+				<file-uploader url="todo.url" method="post" name="todo.id"></file-uploader>
 				<button role="remove" class="btn btn-xs btn-danger btn-remove-todo" ng-click="todoApp.remove(todo.id)">
 					<span class="glyphicon glyphicon-remove"></span>
 				</button>
