@@ -1,6 +1,6 @@
 ## TodoApp
 
-To launch an application, execute `npm i` and simply open "index.html" in your browser.
+To launch an application, execute `npm i`, run `node server.js` and go to `http://localhost:8000`.
 
 Application has `gulp watch` task set up to recompile JavaScript and LESS to `build/app.js` and `build/app.css` respectively.
 

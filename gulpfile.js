@@ -39,7 +39,7 @@ gulp.task('e2e', function (done) {
 		webdriver,
 		protractor;
 
-	server = exec('python ' + getServerParams());
+	server = exec('node server.js');
 	webdriver = exec('webdriver-manager start');
 	protractor = exec('protractor e2e/conf.js');
 
@@ -56,15 +56,3 @@ gulp.task('e2e', function (done) {
 		process.exit(0);
 	});
 });
-
-function getServerParams() {
-	var params = '-m ';
-
-	if (/^win/.test(process.platform)) {
-		params += 'http.server';
-	} else {
-		params += 'SimpleHTTPServer';
-	}
-
-	return params;
-}

@@ -24,7 +24,7 @@
 
 		vm.toggleComplete = toggleComplete;
 
-		vm.getItemClasses = getItemClasses;
+		vm.getItemClassesFor = getItemClassesFor;
 
 		vm.isTodoVisible = isTodoVisible;
 
@@ -55,7 +55,12 @@
 
 			if (!text) return;
 
-			return todoStorage.create(text).then(reloadTodos).then(emptyInput);
+			return todoStorage.create(text)
+				.then(parseResponse)
+				.then(reloadTodos)
+				.then(emptyInput);
+
+			function parseResponce(res) { return res.data };
 		}
 
 		function reloadTodos() {
@@ -66,7 +71,7 @@
 			todoStorage.remove(id).then(reloadTodos);
 		}
 
-		function getItemClasses(todo) {
+		function getItemClassesFor(todo) {
 			return {
 				complete: todo.complete,
 				incomplete: !todo.complete
