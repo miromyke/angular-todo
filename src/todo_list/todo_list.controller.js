@@ -10,7 +10,9 @@
 	function TodoListController(todoStorage) {
 		var vm = this;
 
-		vm.todos = todoStorage.todos;
+		todoStorage.get().then(reloadTodos);
+
+		vm.todos = [];
 
 		vm.currentText = '';
 
@@ -20,15 +22,13 @@
 
 		vm.remove = remove;
 
-		vm.toggleComplete = todoStorage.toggleTodo;
+		vm.toggleComplete = toggleComplete;
 
 		vm.getItemClasses = getItemClasses;
 
 		vm.isTodoVisible = isTodoVisible;
 
-		vm.hasNoVisibleTodos = function () {
-			return !getVisibleTodos().length;
-		};
+		vm.hasNoVisibleTodos = hasNoVisibleTodos;
 
 		vm.showAll = function () {
 			vm.displayMode = 'all';
@@ -51,29 +51,32 @@
 		];
 
 		function create() {
-			var text = vm.currentText,
-				item;
+			var text = vm.currentText;
 
 			if (!text) return;
 
-			item = todoStorage.create(text);
+			return todoStorage.create(text).then(reloadTodos).then(emptyInput);
+		}
 
-			vm.currentText = '';
+		function reloadTodos() {
+			return todoStorage.get().then(assignTodos);
 		}
 
 		function remove(id) {
-			var item = todoStorage.get(id);
-
-			todoStorage.remove(id);
+			todoStorage.remove(id).then(reloadTodos);
 		}
 
-		function getItemClasses(id) {
-			var item = todoStorage.get(id);
-
+		function getItemClasses(todo) {
 			return {
-				complete: item.complete,
-				incomplete: !item.complete
+				complete: todo.complete,
+				incomplete: !todo.complete
 			};
+		}
+
+		function toggleComplete(todo) {
+			return todoStorage
+				.update(todo.id, { complete: !todo.complete })
+				.then(reloadTodos);
 		}
 
 		function getEmptyText() {
@@ -84,10 +87,6 @@
 			}
 
 			return text;
-		}
-
-		function getVisibleTodos() {
-			return vm.todos.filter(isTodoVisible);
 		}
 
 		function isTodoVisible(todo) {
@@ -109,6 +108,20 @@
 			todoFits = (isComplete && showComplete) || (!isComplete && showIncomplete);
 
 			return todoFits;
+		}
+
+		function assignTodos(res) {
+			vm.todos = res.data;
+		}
+
+		function emptyInput() {
+			vm.currentText = '';
+		}
+
+		function hasNoVisibleTodos() {
+			var visibleTodos = vm.todos.filter(isTodoVisible);
+
+			return !visibleTodos.length;
 		}
 	}
 })();

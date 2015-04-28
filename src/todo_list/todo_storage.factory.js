@@ -3,99 +3,38 @@
 
 	angular
 		.module('todoList')
-		.factory('todoStorage', GetTodoStorage);
+		.factory('todoStorage', getTodoStorage);
 
-	GetTodoStorage.$inject = ['uid'];
+	getTodoStorage.$inject = ['$http'];
 
-	function GetTodoStorage(uid) {
-		var todos = fetch(),
-			indexedItems = todos.length ? _.indexBy(todos, 'id') : {},
-			generateId;
-
-		generateId = uid.createGenerator(getMaxId());
-
+	function getTodoStorage($http) {
 		return {
-			getComplete: getComplete,
-			getIncomplete: getIncomplete,
-			todos: todos,
+			get: get,
 			create: create,
 			remove: remove,
-			get: get,
-			store: store,
-			toggleTodo: toggleTodo
+			update: update
 		}
 
 		function get(id) {
-			return indexedItems[id] || null;
+			var url = getUrl(id);
+
+			return $http.get(url);
 		}
 
 		function create(text) {
-			var id,
-				item;
-
-			if (!text) return;
-
-			id = generateId();
-
-			item = {
-				id: id,
-				text: text,
-				complete: false
-			};
-
-			todos.unshift(item);
-
-			indexedItems[id] = item;
-
-			store();
-
-			return item;
+			return $http.post(getUrl(), { text: text });
 		}
 
 		function remove(id) {
-			var item = indexedItems[id];
-
-			todos.splice(todos.indexOf(item), 1);
-
-			delete indexedItems[id];
-
-			store();
+			return $http.delete(getUrl(id));
 		}
 
-		function getComplete() {
-			return todos.filter(function (item) {
-				return item.complete;
-			});
+		function update(id, data) {
+			return $http.put(getUrl(id), data);
 		}
 
-		function getIncomplete() {
-			return todos.filter(function (item) {
-				return !item.complete;
-			});
-		}
-
-		function toggleTodo(id) {
-			var todo = indexedItems[id];
-
-			todo.complete = !todo.complete;
-
-			store();
-		}
-
-		function fetch() {
-			var data = localStorage.getItem('todoAppItems');
-
-			return data ? angular.fromJson(data) : [];
-		}
-
-		function store() {
-			localStorage.setItem('todoAppItems', angular.toJson(todos));
-		}
-
-		function getMaxId() {
-			var ids = Object.keys(indexedItems);
-
-			return Math.max.apply(Math, ids.length ? ids : [0]);
+		function getUrl(optionalId) {
+			return '/todos' + (optionalId ? '/' + optionalId : '');
 		}
 	}
 })();
