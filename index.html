@@ -7,11 +7,13 @@
 	<script type="text/javascript" src="vendor/jquery-form/jquery.form.js"></script>
 	<script type="text/javascript" src="vendor/angular/angular.js"></script>
 	<script type="text/javascript" src="vendor/angular-animate/angular-animate.js"></script>
+	<script type="text/javascript" src="vendor/angular-loading-bar/src/loading-bar.js"></script>
+	<link rel="stylesheet" href="vendor/angular-loading-bar/src/loading-bar.css">
 	<link rel="stylesheet" href="build/app.css">
 </head>
 <body ng-cloak>
 	<div class="container">
-		<h1>Todos</h1>
+		<h1>Todo List</h1>
 		<div ng-controller="TodoListController as todoApp">
 			<form class="form-inline" ng-submit="todoApp.create()">
 				<div class="form-group">
@@ -27,7 +29,6 @@
 					<span class="glyphicon glyphicon-ok"></span>
 				</button>
 				<span ng-class="todo.complete ? 'complete' : 'incomplete'">{{ todo.text }}</span>
-				<file-uploader url="todo.url" method="post" name="todo.id"></file-uploader>
 				<button role="remove" class="btn btn-xs btn-danger btn-remove-todo" ng-click="todoApp.remove(todo.id)">
 					<span class="glyphicon glyphicon-remove"></span>
 				</button>

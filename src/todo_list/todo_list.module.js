@@ -1,5 +1,5 @@
 (function () {
 	'use strict';
 
-	angular.module('todoList', ['core', 'ngAnimate']);
+	angular.module('todoList', ['core', 'angular-loading-bar', 'ngAnimate']);
 })();

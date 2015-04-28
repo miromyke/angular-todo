@@ -1,7 +1,0 @@
-<form ng-submit="vm.submit()" action="{{ vm.to }}" method="{{ vm.type }}" enctype="multipart/form-data">
-	<input name="{{ vm.id }}" type="file" multiple>
-	<input type="submit">
-	<div ng-repeat="image in vm.images">
-		<img src="{{ image }}" />
-	</div>
-</form>
