@@ -41,7 +41,7 @@ function setupMiddlewares(app) {
 
 function getStaticServer() {
 	var basePath = readFile(APP_CONFIG_FILE);
-	console.log(path.join(process.cwd(), basePath))
+	
 	return serveStatic(path.join(process.cwd(), basePath));
 }
 

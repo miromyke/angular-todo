@@ -2,43 +2,45 @@ var gulp 	= require('gulp'),
 	concat 	= require('gulp-concat'),
 	less 	= require('gulp-less'),
 	exec 	= require('child_process').exec,
-	fs 		= require('fs'),
-	APP_DIR = readFile('.app');
+	env 	= require('./env');
 
-gulp.task('default', ['build', 'less']);
+gulp.task('default', ['js', 'less']);
 
 gulp.task('pre-commit', ['e2e']);
 
-gulp.task('watch', function () {
-	gulp.watch([
-		'./less/**/*.less',
-		'./less/**/*.css'
-	], ['less']);
+gulp.task('watch', watch);
 
-	gulp.watch('.' + APP_DIR + '/**/*.js', ['build'])
-});
+gulp.task('js', buildJs);
 
-gulp.task('build', function () {
-	var jsAssets = [
-		'/**/*.module.js',
-		'/*/**/*.js',
-		'/app.js'
-	].map(function (path) { return '.' + APP_DIR + path });
+gulp.task('less', buildLess);
 
-	return gulp.src(jsAssets)
-    	.pipe(concat('app.js'))
-		.pipe(gulp.dest('./build'));
-});
+gulp.task('e2e', e2e);
 
-gulp.task('less', function () {
+gulp.task('clean', clean);
+
+function watch() {
+	gulp.watch(env.lessAssetsToWatch(), ['less']);
+
+	gulp.watch(env.jsAssetsToWatch(), ['js'])
+
+	gulp.watch(env.APP_CONFIG_FILE, ['js', 'less']);
+}
+
+function buildJs() {
+	return gulp.src(env.jsAssetsSequence())
+		.pipe(concat(env.BUILD_FILE_PREFIX + '.js'))
+		.pipe(gulp.dest(env.buildDir()));
+}
+
+function buildLess() {
 	return gulp
-		.src('./less/app.less')
+		.src(env.mainLessFile())
 		.pipe(less())
-		.pipe(concat('app.css'))
-		.pipe(gulp.dest('./build'));
-});
+		.pipe(concat(env.BUILD_FILE_PREFIX + '.css'))
+		.pipe(gulp.dest(env.buildDir()));
+}
 
-gulp.task('e2e', function (done) {
+function e2e(done) {
 	var server,
 		webdriver,
 		protractor;
@@ -59,8 +61,10 @@ gulp.task('e2e', function (done) {
 
 		process.exit(0);
 	});
-});
+}
 
-function readFile(path) {
-	return fs.readFileSync(path, { encoding: 'utf8' });
+function clean(done) {
+	var removal = exec('rm -rf ' + env.BUILD_DIR);
+
+	removal.once('close', done);
 }

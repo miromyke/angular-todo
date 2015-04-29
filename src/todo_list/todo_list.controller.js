@@ -60,7 +60,7 @@
 				.then(reloadTodos)
 				.then(emptyInput);
 
-			function parseResponce(res) { return res.data };
+			function parseResponse(res) { return res.data };
 		}
 
 		function reloadTodos() {
