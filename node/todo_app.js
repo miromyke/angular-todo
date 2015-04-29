@@ -1,6 +1,14 @@
 var multer 		= require('multer'),
 	serveStatic = require('serve-static'),
-	TodoCtrl;
+	fs = require('fs'),
+	path = require('path'),
+	TodoCtrl,
+	staticServer,
+	APP_CONFIG_FILE;
+
+APP_CONFIG_FILE = '.app';
+
+staticServer = getStaticServer();
 
 TodoCtrl = require('./todo_controller'),
 
@@ -26,5 +34,17 @@ function setupMiddlewares(app) {
 
 	app.delete('/todos/:id', TodoCtrl.delete);
 
+	app.use('/', staticServer);
+
 	app.use(serveStatic(process.cwd()));
+}
+
+function getStaticServer() {
+	var basePath = readFile(APP_CONFIG_FILE);
+	console.log(path.join(process.cwd(), basePath))
+	return serveStatic(path.join(process.cwd(), basePath));
+}
+
+function readFile(path) {
+	return fs.readFileSync(path, { encoding: 'utf8' });
 }

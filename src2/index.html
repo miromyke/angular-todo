@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Todos</title>
+	<script type="text/javascript" src="vendor/underscore/underscore.js"></script>
+	<script type="text/javascript" src="vendor/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="vendor/jquery-form/jquery.form.js"></script>
+	<script type="text/javascript" src="vendor/angular/angular.js"></script>
+	<script type="text/javascript" src="vendor/angular-animate/angular-animate.js"></script>
+	<script type="text/javascript" src="vendor/angular-loading-bar/src/loading-bar.js"></script>
+	<link rel="stylesheet" href="vendor/angular-loading-bar/src/loading-bar.css">
+	<link rel="stylesheet" href="build/app.css">
+</head>
+<body ng-cloak>
+	<div class="container">
+		<h1>Todo List</h1>
+		<div ng-controller="TodoListController as todoApp">
+			<form class="form-inline" ng-submit="todoApp.create()">
+				<div class="form-group">
+					<input class="form-control" autofocus type="text" ng-model="todoApp.currentText" />
+					<button class="btn btn-primary btn-md">Submit</button>
+				</div>
+			</form>
+			<div class="actions form-group">
+				<button type="button" class="btn btn-sm" role="show-{{ tab.action }}" ng-repeat="tab in todoApp.tabs" ng-class="'btn-' + tab.type" ng-click="todoApp[tab.method]()">{{ tab.text }}</button>
+			</div>
+			<div class="todo-item" ng-repeat="todo in todoApp.todos | filter:todoApp.isTodoVisible" ng-class="todoApp.getItemClassesFor(todo)">
+				<button role="toggle" class="btn btn-xs" ng-class="'btn-' + (todo.complete ? 'success' : 'default')" ng-click="todoApp.toggleComplete(todo)">
+					<span class="glyphicon glyphicon-ok"></span>
+				</button>
+				<span ng-class="todo.complete ? 'complete' : 'incomplete'">{{ todo.text }}</span>
+				<button role="remove" class="btn btn-xs btn-danger btn-remove-todo" ng-click="todoApp.remove(todo.id)">
+					<span class="glyphicon glyphicon-remove"></span>
+				</button>
+			</div>
+			<h4 ng-show="todoApp.hasNoVisibleTodos()" ng-bind="todoApp.getEmptyText()"></h4>
+		</div>
+	</div>
+	<script type="text/javascript" src="build/app.js"></script>
+</body>
+</html>

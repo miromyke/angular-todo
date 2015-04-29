@@ -1,0 +1,9 @@
+<div class="actions form-group">
+	<button
+		type="button"
+		class="btn btn-sm"
+		role="show-{{ tab.action }}"
+		ng-repeat="tab in todoApp.tabs"
+		ng-class="'btn-' + tab.type"
+		ng-click="todoApp[tab.method]()">{{ tab.text }}</button>
+</div>

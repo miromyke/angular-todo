@@ -1,7 +1,9 @@
-var gulp = require('gulp'),
-	concat = require('gulp-concat'),
-	less = require('gulp-less'),
-	exec = require('child_process').exec;
+var gulp 	= require('gulp'),
+	concat 	= require('gulp-concat'),
+	less 	= require('gulp-less'),
+	exec 	= require('child_process').exec,
+	fs 		= require('fs'),
+	APP_DIR = readFile('.app');
 
 gulp.task('default', ['build', 'less']);
 
@@ -13,15 +15,17 @@ gulp.task('watch', function () {
 		'./less/**/*.css'
 	], ['less']);
 
-	gulp.watch('./src/**/*.js', ['build'])
+	gulp.watch('.' + APP_DIR + '/**/*.js', ['build'])
 });
 
 gulp.task('build', function () {
-	return gulp.src([
-			'./src/**/*.module.js',
-			'./src/*/**/*.js',
-			'./src/app.js'
-		])
+	var jsAssets = [
+		'/**/*.module.js',
+		'/*/**/*.js',
+		'/app.js'
+	].map(function (path) { return '.' + APP_DIR + path });
+
+	return gulp.src(jsAssets)
     	.pipe(concat('app.js'))
 		.pipe(gulp.dest('./build'));
 });
@@ -56,3 +60,7 @@ gulp.task('e2e', function (done) {
 		process.exit(0);
 	});
 });
+
+function readFile(path) {
+	return fs.readFileSync(path, { encoding: 'utf8' });
+}
