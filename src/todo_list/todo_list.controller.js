@@ -128,10 +128,27 @@
 			return newTodo;
 		}
 
-		function handleTodoUpdate(updatedTodo) {
-			var todoToUpdate = indexedTodos[updatedTodo.id];
+		function handleTodoUpdate(updatedTodo, shouldExtend) {
+			var id = updatedTodo.id,
+				todo = indexedTodos[id];
 
-			_.extend(todoToUpdate, updatedTodo);
+			if (!todo) {
+				return;
+			}
+
+			if (shouldExtend) {
+				_.extend(todo, updatedTodo);
+			} else {
+				replaceTodo(id, updatedTodo);
+			}
+		}
+
+		function replaceTodo(id, updatedTodo) {
+			var todo = indexedTodos[id];
+
+			vm.todos.splice(vm.todos.indexOf(todo), 1, updatedTodo);
+
+			indexedTodos[id] = updatedTodo;	
 		}
 
 		function handleTodoRemoval(todo) {
