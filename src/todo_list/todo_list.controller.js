@@ -26,7 +26,7 @@
 
 		vm.getItemClassesFor = getItemClassesFor;
 
-		vm.isTodoVisible = isTodoVisible;
+		vm.isVisible = isVisible;
 
 		vm.hasNoVisibleTodos = hasNoVisibleTodos;
 
@@ -59,12 +59,13 @@
 				.then(parseResponse)
 				.then(reloadTodos)
 				.then(emptyInput);
-
-			function parseResponse(res) { return res.data };
 		}
 
 		function reloadTodos() {
-			return todoStorage.get().then(assignTodos);
+
+			return todoStorage.get()
+				.then(parseResponse)
+				.then(assignTodos);
 		}
 
 		function remove(id) {
@@ -72,6 +73,7 @@
 		}
 
 		function getItemClassesFor(todo) {
+
 			return {
 				complete: todo.complete,
 				incomplete: !todo.complete
@@ -79,6 +81,7 @@
 		}
 
 		function toggleComplete(todo) {
+			
 			return todoStorage
 				.update(todo.id, { complete: !todo.complete })
 				.then(reloadTodos);
@@ -94,7 +97,7 @@
 			return text;
 		}
 
-		function isTodoVisible(todo) {
+		function isVisible(todo) {
 			var display = vm.displayMode,
 				showAll = display === 'all',
 				showComplete,
@@ -115,8 +118,12 @@
 			return todoFits;
 		}
 
-		function assignTodos(res) {
-			vm.todos = res.data;
+		function parseResponse(res) {
+			return res.data;
+		}
+
+		function assignTodos(todos) {
+			vm.todos = todos;
 		}
 
 		function emptyInput() {
@@ -124,7 +131,7 @@
 		}
 
 		function hasNoVisibleTodos() {
-			var visibleTodos = vm.todos.filter(isTodoVisible);
+			var visibleTodos = vm.todos.filter(isVisible);
 
 			return !visibleTodos.length;
 		}
