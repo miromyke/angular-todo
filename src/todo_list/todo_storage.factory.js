@@ -5,9 +5,9 @@
 		.module('todoList')
 		.factory('todoStorage', getTodoStorage);
 
-	getTodoStorage.$inject = ['$http', 'todoStorageCache'];
+	getTodoStorage.$inject = ['$http'];
 
-	function getTodoStorage($http, todoCache) {
+	function getTodoStorage($http) {
 		return {
 			get: get,
 			create: create,
@@ -16,13 +16,11 @@
 		}
 
 		function get(id) {
-			var url = getUrl(id),
-				cache = id ? todoCache.byId : todoCache.set;
+			var url = getUrl(id);
 
 			return $http
 				.get(url)
-				.then(parseResponse)
-				.then(cache);
+				.then(parseResponse);
 		}
 
 		function getAll() {
@@ -36,22 +34,20 @@
 
 			return $http
 				.post(getUrl(), { text: text })
-				.then(parseResponse)
-				.then(todoCache.cache);
+				.then(parseResponse);
 		}
 
 		function remove(id) {
 
 			return $http
 				.delete(getUrl(id))
-				.then(parseResponse)
-				.then(todoCache.remove);
+				.then(parseResponse);
 		}
 
 		function update(id, data) {
 
 			return $http
-				.put(getUrl(id), data))
+				.put(getUrl(id), data)
 				.then(parseResponse);
 		}
 

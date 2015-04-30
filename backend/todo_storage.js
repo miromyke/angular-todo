@@ -80,11 +80,11 @@ function readTodo(id, cb) {
 }
 
 function writeTodo(id, data, cb) {
-	var toUpdate = indexed[id];
+	var todoToUpdate = indexed[id];
 
-	_.extend(toUpdate, data);
+	_.extend(todoToUpdate, data);
 
-	storeTodos(cb);
+	storeTodos(cb.bind(null, todoToUpdate));
 }
 
 function removeTodo(id, cb) {
@@ -94,7 +94,7 @@ function removeTodo(id, cb) {
 
 	delete indexed[id];
 
-	storeTodos(cb);
+	storeTodos(cb.bind(null, id));
 }
 
 function storeTodos(cb) {

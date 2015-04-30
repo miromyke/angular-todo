@@ -8,9 +8,10 @@
 	TodoListController.$inject = ['todoStorage'];
 
 	function TodoListController(todoStorage) {
-		var vm = this;
+		var vm = this,
+			indexedTodos = {};
 
-		todoStorage.get().then(reloadTodos);
+		reload();
 
 		vm.todos = [];
 
@@ -26,9 +27,9 @@
 
 		vm.getItemClassesFor = getItemClassesFor;
 
-		vm.isVisible = isVisible;
+		vm.isTodoVisible = isVisible;
 
-		vm.hasNoVisibleTodos = hasNoVisibleTodos;
+		vm.isTodoListEmpty = isTodoListEmpty;
 
 		vm.showAll = function () {
 			vm.displayMode = 'all';
@@ -55,36 +56,19 @@
 
 			if (!text) return;
 
-			return todoStorage.create(text)
-				.then(parseResponse)
-				.then(reloadTodos)
-				.then(emptyInput);
+			return todoStorage.create(text).then(handleTodoCreate).then(emptyInput);
 		}
 
-		function reloadTodos() {
-
-			return todoStorage.get()
-				.then(parseResponse)
-				.then(assignTodos);
+		function reload() {
+			return todoStorage.get().then(handleTodosReload);
 		}
 
 		function remove(id) {
-			todoStorage.remove(id).then(reloadTodos);
-		}
-
-		function getItemClassesFor(todo) {
-
-			return {
-				complete: todo.complete,
-				incomplete: !todo.complete
-			};
+			return todoStorage.remove(id).then(handleTodoRemoval);
 		}
 
 		function toggleComplete(todo) {
-			
-			return todoStorage
-				.update(todo.id, { complete: !todo.complete })
-				.then(reloadTodos);
+			return todoStorage.update(todo.id, { complete: !todo.complete }).then(handleTodoUpdate);
 		}
 
 		function getEmptyText() {
@@ -95,6 +79,14 @@
 			}
 
 			return text;
+		}
+
+		function getItemClassesFor(todo) {
+
+			return {
+				complete: todo.complete,
+				incomplete: !todo.complete
+			};
 		}
 
 		function isVisible(todo) {
@@ -118,22 +110,42 @@
 			return todoFits;
 		}
 
-		function parseResponse(res) {
-			return res.data;
-		}
-
-		function assignTodos(todos) {
-			vm.todos = todos;
-		}
-
 		function emptyInput() {
 			vm.currentText = '';
 		}
 
-		function hasNoVisibleTodos() {
+		function isTodoListEmpty() {
 			var visibleTodos = vm.todos.filter(isVisible);
 
 			return !visibleTodos.length;
+		}
+
+		function handleTodoCreate(newTodo) {
+			vm.todos.unshift(newTodo);
+
+			indexedTodos[newTodo.id] = newTodo;
+
+			return newTodo;
+		}
+
+		function handleTodoUpdate(updatedTodo) {
+			var todoToUpdate = indexedTodos[updatedTodo.id];
+
+			_.extend(todoToUpdate, updatedTodo);
+		}
+
+		function handleTodoRemoval(todo) {
+			var todo = indexedTodos[todo.id];
+
+			vm.todos.splice(vm.todos.indexOf(todo), 1);
+
+			delete indexedTodos[todo.id];
+		}
+
+		function handleTodosReload(todos) {
+			vm.todos = todos;
+
+			indexedTodos = _.indexBy(todos, 'id');
 		}
 	}
 })();
