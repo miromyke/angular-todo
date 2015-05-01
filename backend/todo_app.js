@@ -10,7 +10,7 @@ APP_CONFIG_FILE = '.app';
 
 staticServer = getStaticServer();
 
-TodoCtrl = require('./todo_controller'),
+TodoCtrl = require('./todo_controller');
 
 exports.init = bindTo;
 
@@ -22,6 +22,8 @@ function bindTo(app, cb) {
 }
 
 function setupMiddlewares(app) {
+	app.use(randomizeLatency);
+
 	app.use(multer({ dest: './uploads/' }));
 
 	app.post('/todos', TodoCtrl.create);
@@ -33,6 +35,8 @@ function setupMiddlewares(app) {
 	app.put('/todos/:id', TodoCtrl.update);
 
 	app.delete('/todos/:id', TodoCtrl.delete);
+
+	app.delete('/todos', TodoCtrl.deleteAll);
 
 	app.use('/', staticServer);
 
@@ -47,4 +51,10 @@ function getStaticServer() {
 
 function readFile(path) {
 	return fs.readFileSync(path, { encoding: 'utf8' });
+}
+
+function randomizeLatency(req, res, next) {
+	var latency = Math.random() * 1000;
+
+	setTimeout(next, latency);
 }

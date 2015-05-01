@@ -150,15 +150,9 @@ describe('Todo App', function () {
 	}
 
 	function removeAllTodos() {
-		var todos = getTodos();
+		var removeAllBtn = element(by.css('[role="removeAll"]'));
 
-		todos.count().then(function (count) {
-			if (count) {
-				removeTodo(todos.get(0));
-
-				removeAllTodos();
-			}
-		});
+		removeAllBtn.click();
 	}
 
 	function getButtons() {

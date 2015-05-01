@@ -31,6 +31,8 @@
 
 		vm.isTodoListEmpty = isTodoListEmpty;
 
+		vm.removeAll = removeAll;
+
 		vm.showAll = function () {
 			vm.displayMode = 'all';
 		}
@@ -48,7 +50,8 @@
 		vm.tabs = [
 			{ action: 'all', 		type: 'default', text: 'Show all', 			method: 'showAll' },
 			{ action: 'complete', 	type: 'success', text: 'Show complete', 	method: 'showComplete' },
-			{ action: 'incomplete', type: 'warning', text: 'Show incomplete', 	method: 'showIncomplete' }
+			{ action: 'incomplete', type: 'warning', text: 'Show incomplete', 	method: 'showIncomplete' },
+			{ action: 'removeAll',  type: 'danger',  text: 'Delete all', 		method: 'removeAll' }
 		];
 
 		function create() {
@@ -65,6 +68,10 @@
 
 		function remove(id) {
 			return todoStorage.remove(id).then(handleTodoRemoval);
+		}
+
+		function removeAll() {
+			return todoStorage.removeAll().then(handleTodosRemoval);
 		}
 
 		function toggleComplete(todo) {
@@ -157,6 +164,19 @@
 			vm.todos.splice(vm.todos.indexOf(todo), 1);
 
 			delete indexedTodos[todo.id];
+		}
+
+		function handleTodosRemoval(removedIds) {
+			removedIds.forEach(function (id) {
+				var todo = indexedTodos[id],
+					position = vm.todos.indexOf(todo);
+
+				if (!!~position) {
+					vm.todos.splice(position, 1);
+				}
+
+				delete indexedTodos[id];
+			});
 		}
 
 		function handleTodosReload(todos) {

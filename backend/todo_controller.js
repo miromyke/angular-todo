@@ -9,7 +9,8 @@ api = {
 	create: 	onTodoCreate,
 	fetch: 		onTodoFetch,
 	update: 	onTodoUpdate,
-	delete: 	onTodoDelete
+	delete: 	onTodoDelete,
+	deleteAll:  onTodosDeleteAll
 };
 
 function boot(cb) {
@@ -61,5 +62,11 @@ function onTodoDelete(req, res, next) {
 
 	TodoStorage.remove(id, function (id) {
 		res.send({ id: id });
+	});
+}
+
+function onTodosDeleteAll(req, res, next) {
+	TodoStorage.removeAll(req.body.ids, function (deletedIds) {
+		res.send(deletedIds);
 	});
 }

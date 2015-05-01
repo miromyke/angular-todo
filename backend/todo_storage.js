@@ -14,7 +14,8 @@ api = {
 	update: writeTodo,
 	create: createTodo,
 	read: readTodo,
-	remove: removeTodo
+	remove: removeTodo,
+	removeAll: removeTodos
 };
 
 function boot(cb) {
@@ -95,6 +96,25 @@ function removeTodo(id, cb) {
 	delete indexed[id];
 
 	storeTodos(cb.bind(null, id));
+}
+
+function removeTodos(ids, cb) {
+	var idsToRemove = ids || Object.keys(indexed);
+
+	idsToRemove.forEach(function (id) {
+		var todo = indexed[id],
+			position;
+
+		position = todos.indexOf(todo);
+
+		if (!!~position) {
+			todos.splice(position, 1);
+		}
+
+		delete indexed[id];
+	});
+
+	storeTodos(cb.bind(null, idsToRemove));
 }
 
 function storeTodos(cb) {

@@ -12,6 +12,7 @@
 			get: get,
 			create: create,
 			remove: remove,
+			removeAll: removeAll,
 			update: update
 		}
 
@@ -41,6 +42,13 @@
 
 			return $http
 				.delete(getUrl(id))
+				.then(parseResponse);
+		}
+
+		function removeAll() {
+
+			return $http
+				.delete(getUrl())
 				.then(parseResponse);
 		}
 
