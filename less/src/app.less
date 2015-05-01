@@ -1,8 +1,16 @@
 @import 'boilerplate.less';
 
+.borderRadius(@data) {
+	border-radius: @data;
+	-webkit-border-radius: @data;
+	-moz-border-radius: @data;
+}
+
 .todo-item {
 	margin-top: 5px;
+	padding: 10px 15px;
 	.clearfix;
+	.borderRadius(3px);
 
 	&:first-child {
 		margin-top: 0;
@@ -12,8 +20,7 @@
 		background-color: #FFF3C3;
 	}
 
-	.btn-remove-todo {
-		float: right;
+	&.incomplete {
 	}
 
 	&.ng-leave,

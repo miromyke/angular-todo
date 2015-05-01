@@ -17,17 +17,22 @@
 				</div>
 			</form>
 			<div class="actions form-group">
-				<button type="button" class="btn btn-sm" ng-class="tab.css" role="{{ tab.action }}" ng-repeat="tab in todoApp.tabs" ng-class="'btn-' + tab.type" ng-click="todoApp[tab.method]()">{{ tab.text }}</button>
+				<button type="button" class="btn btn-sm" role="{{ tab.action }}" ng-repeat="tab in todoApp.tabs" ng-class="'btn-' + tab.type" ng-click="todoApp[tab.method]()">{{ tab.text }}</button>
 			</div>
 			<h4 class="empty-list-title" ng-show="todoApp.isTodoListEmpty()" ng-bind="todoApp.getEmptyText()"></h4>
 			<div class="todo-item" ng-repeat="todo in todoApp.todos | filter:todoApp.isTodoVisible track by todo.id" ng-class="todoApp.getItemClassesFor(todo)">
-				<button role="toggle" class="btn btn-xs" ng-class="'btn-' + (todo.complete ? 'success' : 'default')" ng-click="todoApp.toggleComplete(todo)">
-					<span class="glyphicon glyphicon-ok"></span>
-				</button>
 				<span ng-class="todo.complete ? 'complete' : 'incomplete'">{{ todo.text }}</span>
-				<button role="remove" class="btn btn-xs btn-danger btn-remove-todo" ng-click="todoApp.remove(todo.id)">
-					<span class="glyphicon glyphicon-remove"></span>
-				</button>
+				<div class="pull-right todo-actions">
+					<button role="attach" disabled class="btn btn-md btn-default">
+						<span class="glyphicon glyphicon-paperclip"></span>
+					</button>
+					<button role="toggle" class="btn btn-md" ng-class="'btn-' + (todo.complete ? 'success' : 'default')" ng-click="todoApp.toggleComplete(todo)">
+						<span class="glyphicon glyphicon-ok"></span>
+					</button>
+					<button role="remove" class="btn btn-md btn-danger" ng-click="todoApp.remove(todo.id)">
+						<span class="glyphicon glyphicon-remove"></span>
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
