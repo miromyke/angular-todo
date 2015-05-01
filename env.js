@@ -8,8 +8,10 @@ var APP_CONFIG_FILE = '.app',
 module.exports = {
 	appDir: appDir,
 	buildDir: buildDir,
+	jsVendorSequence: jsVendorSequence,
 	jsAssetsSequence: jsAssetsSequence,
 	lessAssetsToWatch: lessAssetsToWatch,
+	cssVendors: cssVendors,
 	jsAssetsToWatch: jsAssetsToWatch,
 	mainLessFile: mainLessFile,
 	BUILD_DIR: BUILD_DIR,
@@ -23,6 +25,21 @@ function appDir() {
 
 function buildDir() {
 	return BUILD_DIR + appDir();
+}
+
+function jsVendorSequence() {
+	return [
+		'./vendor/underscore/underscore.js',
+		'./vendor/jquery/dist/jquery.min.js',
+		'./vendor/jquery-form/jquery.form.js',
+		'./vendor/angular/angular.js',
+		'./vendor/angular-animate/angular-animate.js',
+		'./vendor/angular-loading-bar/src/loading-bar.js'
+	];
+}
+
+function cssVendors() {
+	return ['./vendor/angular-loading-bar/src/loading-bar.css'];
 }
 
 function jsAssetsSequence() {

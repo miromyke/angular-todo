@@ -4,15 +4,19 @@ var gulp 	= require('gulp'),
 	exec 	= require('child_process').exec,
 	env 	= require('./env');
 
-gulp.task('default', ['js', 'less']);
+gulp.task('default', ['buildJs', 'buildJsVendors', 'buildLess', 'buildCssVendors']);
 
 gulp.task('pre-commit', ['e2e']);
 
-gulp.task('watch', watch);
+gulp.task('watch', ['default'], watch);
 
-gulp.task('js', buildJs);
+gulp.task('buildJs', buildJs);
 
-gulp.task('less', buildLess);
+gulp.task('buildJsVendors', buildJsVendors);
+
+gulp.task('buildLess', buildLess);
+
+gulp.task('buildCssVendors', buildCssVendors);
 
 gulp.task('e2e', e2e);
 
@@ -21,9 +25,9 @@ gulp.task('clean', clean);
 function watch() {
 	gulp.watch(env.lessAssetsToWatch(), ['less']);
 
-	gulp.watch(env.jsAssetsToWatch(), ['js'])
+	gulp.watch(env.jsAssetsToWatch(), ['buildJs'])
 
-	gulp.watch(env.APP_CONFIG_FILE, ['js', 'less']);
+	gulp.watch(env.APP_CONFIG_FILE, ['buildJs', 'less']);
 }
 
 function buildJs() {
@@ -32,11 +36,24 @@ function buildJs() {
 		.pipe(gulp.dest(env.buildDir()));
 }
 
+function buildJsVendors() {
+	return gulp.src(env.jsVendorSequence())
+		.pipe(concat('vendor.js'))
+		.pipe(gulp.dest(env.buildDir()));
+}
+
 function buildLess() {
 	return gulp
 		.src(env.mainLessFile())
 		.pipe(less())
 		.pipe(concat(env.BUILD_FILE_PREFIX + '.css'))
+		.pipe(gulp.dest(env.buildDir()));
+}
+
+function buildCssVendors() {
+	return gulp
+		.src(env.cssVendors())
+		.pipe(concat('vendor.css'))
 		.pipe(gulp.dest(env.buildDir()));
 }
 
