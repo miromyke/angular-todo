@@ -17,8 +17,9 @@
 				</div>
 			</form>
 			<div class="actions form-group">
-				<button type="button" class="btn btn-sm" role="{{ tab.action }}" ng-repeat="tab in todoApp.tabs" ng-class="'btn-' + tab.type" ng-click="todoApp[tab.method]()">{{ tab.text }}</button>
+				<button type="button" class="btn btn-sm" ng-class="tab.css" role="{{ tab.action }}" ng-repeat="tab in todoApp.tabs" ng-class="'btn-' + tab.type" ng-click="todoApp[tab.method]()">{{ tab.text }}</button>
 			</div>
+			<h4 class="empty-list-title" ng-show="todoApp.isTodoListEmpty()" ng-bind="todoApp.getEmptyText()"></h4>
 			<div class="todo-item" ng-repeat="todo in todoApp.todos | filter:todoApp.isTodoVisible track by todo.id" ng-class="todoApp.getItemClassesFor(todo)">
 				<button role="toggle" class="btn btn-xs" ng-class="'btn-' + (todo.complete ? 'success' : 'default')" ng-click="todoApp.toggleComplete(todo)">
 					<span class="glyphicon glyphicon-ok"></span>
@@ -28,7 +29,6 @@
 					<span class="glyphicon glyphicon-remove"></span>
 				</button>
 			</div>
-			<h4 ng-show="todoApp.isTodoListEmpty()" ng-bind="todoApp.getEmptyText()"></h4>
 		</div>
 	</div>
 	<script type="text/javascript" src="build/src/app.js"></script>

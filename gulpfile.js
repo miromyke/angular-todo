@@ -23,11 +23,11 @@ gulp.task('e2e', e2e);
 gulp.task('clean', clean);
 
 function watch() {
-	gulp.watch(env.lessAssetsToWatch(), ['less']);
+	gulp.watch(env.lessAssetsToWatch(), ['buildLess']);
 
 	gulp.watch(env.jsAssetsToWatch(), ['buildJs'])
 
-	gulp.watch(env.APP_CONFIG_FILE, ['buildJs', 'less']);
+	gulp.watch(env.APP_CONFIG_FILE, ['buildJs', 'buildLess']);
 }
 
 function buildJs() {

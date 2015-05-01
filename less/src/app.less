@@ -2,46 +2,57 @@
 
 .todo-item {
 	margin-top: 5px;
-
 	.clearfix;
+
+	&:first-child {
+		margin-top: 0;
+	}
+
+	&.complete {
+		background-color: #FFF3C3;
+	}
+
+	.btn-remove-todo {
+		float: right;
+	}
+
+	&.ng-leave,
+	&.ng-enter {
+		.animated;
+	}
+
+	&.ng-leave-active {
+		.bounceOutRight;
+	}
+	&.ng-enter-active {
+		.bounceInLeft;
+	}
 }
 
-.todo-item:first-child {
-	margin-top: 0;
-}
+.empty-list-title {
+	&.ng-hide-remove,
+	&.ng-hide-add,
+	&.ng-leave {
+		.animated;
+	}
 
-.todo-item .btn-remove-todo {
-	float: right;
-}
+	&.ng-hide-add-active {
+		.bounceOutRight;
+	}
 
-.todo-item.complete {
-	background-color: #FFF3C3;
-}
-
-.todo-item.ng-leave {
-	.animated;
-}
-
-.todo-item.ng-leave.ng-leave-active {
-	.bounceOutRight;
-}
-
-.todo-item.ng-enter {
-	.animated;
-}
-
-.todo-item.ng-enter.ng-enter-active {
-	.bounceInLeft;
+	&.ng-hide-remove-active {
+		.bounceInLeft;
+	}
 }
 
 .actions {
 	margin-top: 5px;
-}
 
-.actions .btn {
-	margin-left: 5px;
-}
+	.btn {
+		margin-left: 5px;
 
-.actions .btn:first-child {
-	margin-left: 0;
+		&:first-child {
+			margin-left: 0;
+		}
+	}
 }
