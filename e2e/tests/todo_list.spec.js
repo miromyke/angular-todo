@@ -34,7 +34,7 @@ describe('Todo App', function () {
 		expect(todos.get(0).getText()).toEqual('one more tiny little task');
 		expect(hasClass(todos.get(0), 'complete')).toBe(true);
 
-		removeTodo(todos.get(0));
+		deleteTodo(todos.get(0));
 		browser.get(APP_ROOT_URL);
 
 		expect(todos.get(0).getText()).toEqual(TODO_TEXT);
@@ -66,7 +66,7 @@ describe('Todo App', function () {
 		it('can be removed', function () {
 			var todo = getTodos().get(0);
 
-			removeTodo(todo);
+			deleteTodo(todo);
 			expect(getTodos().count()).toEqual(0);
 		});
 	});
@@ -75,8 +75,8 @@ describe('Todo App', function () {
 		var todos = getTodos();
 
 		beforeEach(function () {
-			showAllTodos();
-			removeAllTodos();
+			showAll();
+			deleteAll();
 
 			createTodo(FIRST_TODO_TEXT);
 			createTodo(SECND_TODO_TEXT);
@@ -85,7 +85,7 @@ describe('Todo App', function () {
 		it('shows all todos when on "Show all" tab', function () {
 			var todo;
 
-			showAllTodos();
+			showAll();
 
 			todo = todos.get(0);
 			toggleTodo(todo);
@@ -120,9 +120,9 @@ describe('Todo App', function () {
 	});
 
 	function bootAndFullfill() {
-		showAllTodos();
+		showAll();
 
-		removeAllTodos();
+		deleteAll();
 
 		createTodo(TODO_TEXT);
 	}
@@ -136,39 +136,27 @@ describe('Todo App', function () {
 	}
 
 	function toggleTodo(todo) {
-		var toggleBtn = todo.element(by.css('[role="toggle"]'));
-
-		toggleBtn.click();
+		todo.element(by.css('[role="toggleTodo"]')).click();
 	}
 
-	function removeTodo(todo) {
-		var removeBtn;
-
-		removeBtn = todo.element(by.css('[role="remove"]'));
-
-		removeBtn.click();
+	function deleteTodo(todo) {
+		todo.element(by.css('[role="deleteTodo"]')).click();
 	}
 
-	function removeAllTodos() {
-		var removeAllBtn = element(by.css('[role="removeAll"]'));
-
-		removeAllBtn.click();
+	function deleteAll() {
+		element(by.css('[role="deleteAll"]')).click();
 	}
 
-	function getButtons() {
-		return element.all(by.repeater('tab in todoApp.tabs'));
-	}
-
-	function showAllTodos() {
-		getButtons().get(0).click();
+	function showAll() {
+		element(by.css('[role="showAll"]')).click();
 	}
 
 	function showComplete() {
-		getButtons().get(1).click();
+		element(by.css('[role="showComplete"]')).click();
 	}
 
 	function showIncomplete() {
-		getButtons().get(2).click();
+		element(by.css('[role="showIncomplete"]')).click();
 	}
 
 	function getTodos() {

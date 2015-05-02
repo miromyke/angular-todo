@@ -54,7 +54,7 @@ function readFile(path) {
 }
 
 function randomizeLatency(req, res, next) {
-	var latency = Math.random() * 1000;
+	var latency = Math.random() * 500;
 
 	setTimeout(next, latency);
 }

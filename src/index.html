@@ -17,7 +17,10 @@
 				</div>
 			</form>
 			<div class="actions form-group">
-				<button type="button" class="btn btn-sm" role="{{ tab.action }}" ng-repeat="tab in todoApp.tabs" ng-class="'btn-' + tab.type" ng-click="todoApp[tab.method]()">{{ tab.text }}</button>
+				<button role="showAll" type="button" class="btn btn-sm" ng-click="todoApp.showAll()">Show all</button>
+				<button role="showComplete" type="button" class="btn btn-sm btn-success" ng-click="todoApp.showComplete()">Show complete</button>
+				<button role="showIncomplete" type="button" class="btn btn-sm btn-warning" ng-click="todoApp.showIncomplete()">Show incomplete</button>
+				<button role="deleteAll" type="button" class="btn btn-sm btn-danger pull-right" ng-click="todoApp.deleteAll()">Delete all</button>
 			</div>
 			<h4 class="empty-list-title" ng-show="todoApp.isTodoListEmpty()" ng-bind="todoApp.getEmptyText()"></h4>
 			<div class="todo-item" ng-repeat="todo in todoApp.todos | filter:todoApp.isTodoVisible track by todo.id" ng-class="todoApp.getItemClassesFor(todo)">
@@ -26,10 +29,10 @@
 					<button role="attach" disabled class="btn btn-md btn-default">
 						<span class="glyphicon glyphicon-paperclip"></span>
 					</button>
-					<button role="toggle" class="btn btn-md" ng-class="'btn-' + (todo.complete ? 'success' : 'default')" ng-click="todoApp.toggleComplete(todo)">
+					<button role="toggleTodo" class="btn btn-md" ng-class="'btn-' + (todo.complete ? 'success' : 'default')" ng-click="todoApp.toggleComplete(todo)">
 						<span class="glyphicon glyphicon-ok"></span>
 					</button>
-					<button role="remove" class="btn btn-md btn-danger" ng-click="todoApp.remove(todo.id)">
+					<button role="deleteTodo" class="btn btn-md btn-danger" ng-click="todoApp.remove(todo.id)">
 						<span class="glyphicon glyphicon-remove"></span>
 					</button>
 				</div>

@@ -31,7 +31,7 @@
 
 		vm.isTodoListEmpty = isTodoListEmpty;
 
-		vm.removeAll = removeAll;
+		vm.deleteAll = deleteAll;
 
 		vm.showAll = function () {
 			vm.displayMode = 'all';
@@ -46,13 +46,6 @@
 		}
 
 		vm.getEmptyText = getEmptyText;
-
-		vm.tabs = [
-			{ action: 'all', 		type: 'default', text: 'Show all', 			method: 'showAll' },
-			{ action: 'complete', 	type: 'success', text: 'Show complete', 	method: 'showComplete' },
-			{ action: 'incomplete', type: 'warning', text: 'Show incomplete', 	method: 'showIncomplete' },
-			{ action: 'removeAll',  type: 'danger',  text: 'Delete all', 		method: 'removeAll' }
-		];
 
 		function create() {
 			var text = vm.currentText;
@@ -70,8 +63,8 @@
 			return todoStorage.remove(id).then(handleTodoRemoval);
 		}
 
-		function removeAll() {
-			return todoStorage.removeAll().then(handleTodosRemoval);
+		function deleteAll() {
+			return todoStorage.deleteAll().then(handleTodosRemoval);
 		}
 
 		function toggleComplete(todo) {
