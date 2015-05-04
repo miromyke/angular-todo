@@ -51,6 +51,10 @@
                 scope.$digest();
             }
 
+            function reset() {
+                form.get(0).reset();
+            }
+
             function getFileName(file) {
                 return file.name;
             }
@@ -62,6 +66,10 @@
                     scope.vm.onUpload()(data);
 
                     vm.isLoading = false;
+
+                    reset();
+
+                    vm.filesToUpload = '';
 
                     scope.$apply();
                 });

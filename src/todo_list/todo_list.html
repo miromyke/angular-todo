@@ -24,10 +24,10 @@
                 name="todo-files"
                 url="todo.api.fileUpload"
                 method="post"></nice-file-uploader>
-            <button role="toggleTodo" class="btn btn-md" ng-class="'btn-' + (todo.complete ? 'success' : 'default')" ng-click="vm.toggleComplete(todo)">
+            <button title="Mark complete" role="toggleTodo" class="btn btn-sm" ng-class="'btn-' + (todo.complete ? 'success' : 'default')" ng-click="vm.toggleComplete(todo)">
                 <span class="glyphicon glyphicon-ok"></span>
             </button>
-            <button role="deleteTodo" class="btn btn-md btn-danger" ng-click="vm.deleteOne(todo)">
+            <button title="Delete" role="deleteTodo" class="btn btn-sm btn-danger" ng-click="vm.deleteOne(todo)">
                 <span class="glyphicon glyphicon-remove"></span>
             </button>
         </div>
