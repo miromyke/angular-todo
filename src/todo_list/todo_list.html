@@ -1,0 +1,45 @@
+<div class="actions form-group">
+    <button role="showAll" type="button" class="btn btn-sm" ng-click="vm.showAll()">Show all</button>
+    <button role="showComplete" type="button" class="btn btn-sm btn-success" ng-click="vm.showComplete()">Show complete</button>
+    <button role="showIncomplete" type="button" class="btn btn-sm btn-warning" ng-click="vm.showIncomplete()">Show incomplete</button>
+    <button role="deleteAll" type="button" class="btn btn-sm btn-danger pull-right" ng-click="vm.deleteAll()">
+        <span class="glyphicon glyphicon-remove"></span>
+        Delete all
+    </button>
+</div>
+<form class="form-inline" ng-submit="vm.create()">
+    <div class="form-group">
+        <input placeholder="e.g. Wash dishes" class="form-control" autofocus type="text" ng-model="vm.currentText" />
+        <button class="btn btn-primary btn-md">Submit</button>
+    </div>
+</form>
+<h5 ng-hide="vm.isBootstrapped">Loading...</h5>
+<h5 class="empty-list-title" ng-show="vm.isBootstrappedAndEmpty()" ng-bind="vm.getEmptyText()"></h4>
+<div class="todo-items">
+    <div class="todo-item" ng-repeat="todo in vm.todos | filter:vm.isTodoVisible track by todo.id" ng-class="vm.getCssFor(todo)">
+        <span ng-class="todo.complete ? 'complete' : 'incomplete'">{{ todo.text }}</span>
+        <div class="pull-right todo-actions">
+            <nice-file-uploader
+                on-upload="vm.onTodoFilesUpload"
+                name="todo-files"
+                url="todo.api.fileUpload"
+                method="post"></nice-file-uploader>
+            <button role="toggleTodo" class="btn btn-md" ng-class="'btn-' + (todo.complete ? 'success' : 'default')" ng-click="vm.toggleComplete(todo)">
+                <span class="glyphicon glyphicon-ok"></span>
+            </button>
+            <button role="deleteTodo" class="btn btn-md btn-danger" ng-click="vm.deleteOne(todo)">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+        </div>
+        <div class="clearfix">
+            <div class="todo-files pull-left">
+                <small ng-show="!!todo.files.length">Attachments:</small>
+                <nice-file-view
+                    ng-repeat="file in todo.files"
+                    type="file.type"
+                    name="file.name"
+                    path="file.path"></nice-file-view>
+            </div>
+        </div>
+    </div>
+</div>

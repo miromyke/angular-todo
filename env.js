@@ -34,6 +34,7 @@ function jsVendorSequence() {
 		'./vendor/jquery-form/jquery.form.js',
 		'./vendor/angular/angular.js',
 		'./vendor/angular-animate/angular-animate.js',
+		'./vendor/angular-route/angular-route.js',
 		'./vendor/angular-loading-bar/src/loading-bar.js'
 	];
 }
