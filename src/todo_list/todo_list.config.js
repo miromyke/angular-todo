@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-		.module('todoList')
+		.module('todoApp')
 		.config(configureTodoList);
 
 	configureTodoList.$inject = ['cfpLoadingBarProvider'];		

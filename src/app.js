@@ -1,5 +1,5 @@
 (function () {
 	'use strict';
 
-	angular.bootstrap(document.body, ['todoList']);	
+	angular.bootstrap(document.body, ['todoApp']);
 })();

@@ -1,4 +1,6 @@
-@import 'boilerplate.less';
+@import "bootstrap.less";
+@import "../../vendor/animate.less/animate.less";
+@import 'directives.less';
 
 .borderRadius(@data) {
 	border-radius: @data;
@@ -8,7 +10,7 @@
 
 .todo-item {
 	margin-top: 5px;
-	padding: 10px 15px;
+	padding: 10px;
 	.clearfix;
 	.borderRadius(3px);
 
@@ -33,6 +35,26 @@
 	}
 	&.ng-enter-active {
 		.bounceInLeft;
+	}
+
+	nice-file-uploader {
+		display: inline-block;
+	}
+
+	.todo-files {
+		margin-top: 10px;
+
+		.uploaded-image {
+			height: 40px;
+		}
+
+		.file {
+			margin-top: 5px;
+
+			&:first-child {
+				margin-top: 0;
+			}
+		}
 	}
 }
 
@@ -61,5 +83,23 @@
 		&:first-child {
 			margin-left: 0;
 		}
+	}
+}
+
+.file-uploader-form {
+	display: inline-block;
+
+	input[type="file"] {
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		opacity: 0;
+	}
+
+	.btn-attach {
+		overflow: hidden;
+		position: relative;
 	}
 }

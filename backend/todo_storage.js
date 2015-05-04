@@ -54,7 +54,11 @@ function createTodo(text, cb) {
 	newTodo = {
 		text: text,
 		id: id,
-		complete: false
+		complete: false,
+		api: {
+			fileUpload: '/todos/' + id + '/files'
+		},
+		files: []
 	};
 
 	indexed[id] = newTodo;

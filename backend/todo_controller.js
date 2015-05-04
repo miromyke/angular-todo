@@ -5,12 +5,13 @@ var TodoStorage = require('./todo_storage'),
 exports.init = boot;
 
 api = {
-	fetchAll: 	onTodoFetchAll,
-	create: 	onTodoCreate,
-	fetch: 		onTodoFetch,
-	update: 	onTodoUpdate,
-	delete: 	onTodoDelete,
-	deleteAll:  onTodosDeleteAll
+	fetchAll: 			onTodoFetchAll,
+	create: 			onTodoCreate,
+	fetch: 				onTodoFetch,
+	update: 			onTodoUpdate,
+	delete: 			onTodoDelete,
+	deleteAll:  		onTodosDeleteAll,
+	uploadTodoFiles: 	onUploadTodoFiles
 };
 
 function boot(cb) {
@@ -69,4 +70,63 @@ function onTodosDeleteAll(req, res, next) {
 	TodoStorage.removeAll(req.body.ids, function (deletedIds) {
 		res.send(deletedIds);
 	});
+}
+
+function onUploadTodoFiles(req, res, next) {
+	var files = req.files['todo-files'],
+		id = req.params.id;
+
+	files = Array.isArray(files) ? files : [files];
+
+	TodoStorage.read(id, function (todo) {
+		todo.files = todo.files.concat(files.map(formatFile));
+
+		TodoStorage.update(todo.id, todo, function (todo) {
+			res.send(todo);
+		});
+	});
+}
+
+function formatFile(file) {
+	return {
+		name: file.originalname,
+		type: mimeToFileType(file.mimetype),
+		path: file.path,
+		ext: file.extension
+	};
+}
+
+function mimeToFileType(mimeType) {
+	var prefix,
+		type;
+
+	prefix = mimeType.split('/')[0];
+
+	switch (prefix) {
+		case 'application':
+			type = 'file';
+			break;
+
+		case 'video':
+			type = 'video';
+			break;
+
+		case 'audio':
+			type = 'audio';
+			break;
+
+		case 'image':
+			type = 'image';
+			break;
+
+		case 'text':
+			type = 'text';
+			break;
+
+		default:
+			type = 'file';
+			break;
+	}
+
+	return type;
 }

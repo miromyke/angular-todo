@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-		.module('todoList')
+		.module('todoApp')
 		.factory('todoStorage', getTodoStorage);
 
 	getTodoStorage.$inject = ['$http'];
@@ -11,7 +11,7 @@
 		return {
 			get: get,
 			create: create,
-			remove: remove,
+			deleteOne: deleteOne,
 			deleteAll: deleteAll,
 			update: update
 		}
@@ -38,7 +38,7 @@
 				.then(parseResponse);
 		}
 
-		function remove(id) {
+		function deleteOne(id) {
 
 			return $http
 				.delete(getUrl(id))

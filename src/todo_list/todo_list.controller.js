@@ -2,16 +2,18 @@
 	'use strict';
 
 	angular
-		.module('todoList')
-		.controller('TodoListController', TodoListController);
+		.module('todoApp')
+		.controller('TodoAppController', TodoAppController);
 
-	TodoListController.$inject = ['todoStorage'];
+	TodoAppController.$inject = ['todoStorage'];
 
-	function TodoListController(todoStorage) {
+	function TodoAppController(todoStorage) {
 		var vm = this,
-			indexedTodos = {};
+			indexed = {};
 
-		reload();
+		vm.isBootstrapped = false;
+
+		reload(boot);
 
 		vm.todos = [];
 
@@ -21,17 +23,21 @@
 
 		vm.create = create;
 
-		vm.remove = remove;
+		vm.deleteOne = deleteOne;
 
 		vm.toggleComplete = toggleComplete;
 
-		vm.getItemClassesFor = getItemClassesFor;
+		vm.getCssFor = getCssFor;
 
 		vm.isTodoVisible = isVisible;
 
-		vm.isTodoListEmpty = isTodoListEmpty;
+		vm.isBootstrappedAndEmpty = isBootstrappedAndEmpty;
 
 		vm.deleteAll = deleteAll;
+
+		vm.getEmptyText = getEmptyText;
+
+		vm.onTodoFilesUpload = onTodoFilesUpload;
 
 		vm.showAll = function () {
 			vm.displayMode = 'all';
@@ -45,7 +51,9 @@
 			vm.displayMode = 'incomplete';
 		}
 
-		vm.getEmptyText = getEmptyText;
+		function boot() {
+			vm.isBootstrapped = true;
+		}
 
 		function create() {
 			var text = vm.currentText;
@@ -55,16 +63,22 @@
 			return todoStorage.create(text).then(handleTodoCreate).then(emptyInput);
 		}
 
-		function reload() {
-			return todoStorage.get().then(handleTodosReload);
+		function reload(cb) {
+			var callback = cb || function () {};
+
+			return todoStorage.get().then(handleTodosReload).then(cb);
 		}
 
-		function remove(id) {
-			return todoStorage.remove(id).then(handleTodoRemoval);
+		function deleteOne(todo) {
+			return todoStorage.deleteOne(todo.id).then(handleTodoRemoval);
 		}
 
 		function deleteAll() {
 			return todoStorage.deleteAll().then(handleTodosRemoval);
+		}
+
+		function onTodoFilesUpload(todo) {
+			replaceTodo(todo.id, todo);
 		}
 
 		function toggleComplete(todo) {
@@ -81,7 +95,7 @@
 			return text;
 		}
 
-		function getItemClassesFor(todo) {
+		function getCssFor(todo) {
 
 			return {
 				complete: todo.complete,
@@ -114,7 +128,11 @@
 			vm.currentText = '';
 		}
 
-		function isTodoListEmpty() {
+		function isBootstrappedAndEmpty() {
+			return vm.isBootstrapped && isEmpty();
+		}
+
+		function isEmpty() {
 			var visibleTodos = vm.todos.filter(isVisible);
 
 			return !visibleTodos.length;
@@ -123,59 +141,55 @@
 		function handleTodoCreate(newTodo) {
 			vm.todos.unshift(newTodo);
 
-			indexedTodos[newTodo.id] = newTodo;
+			indexed[newTodo.id] = newTodo;
 
 			return newTodo;
 		}
 
-		function handleTodoUpdate(updatedTodo, shouldExtend) {
+		function handleTodoUpdate(updatedTodo) {
 			var id = updatedTodo.id,
-				todo = indexedTodos[id];
+				todo = indexed[id];
 
 			if (!todo) {
 				return;
 			}
 
-			if (shouldExtend) {
-				_.extend(todo, updatedTodo);
-			} else {
-				replaceTodo(id, updatedTodo);
-			}
+			replaceTodo(id, updatedTodo);
 		}
 
 		function replaceTodo(id, updatedTodo) {
-			var todo = indexedTodos[id];
+			var todo = indexed[id];
 
 			vm.todos.splice(vm.todos.indexOf(todo), 1, updatedTodo);
 
-			indexedTodos[id] = updatedTodo;	
+			indexed[id] = updatedTodo;
 		}
 
 		function handleTodoRemoval(todo) {
-			var todo = indexedTodos[todo.id];
+			var todo = indexed[todo.id];
 
 			vm.todos.splice(vm.todos.indexOf(todo), 1);
 
-			delete indexedTodos[todo.id];
+			delete indexed[todo.id];
 		}
 
 		function handleTodosRemoval(removedIds) {
 			removedIds.forEach(function (id) {
-				var todo = indexedTodos[id],
+				var todo = indexed[id],
 					position = vm.todos.indexOf(todo);
 
 				if (!!~position) {
 					vm.todos.splice(position, 1);
 				}
 
-				delete indexedTodos[id];
+				delete indexed[id];
 			});
 		}
 
 		function handleTodosReload(todos) {
 			vm.todos = todos;
 
-			indexedTodos = _.indexBy(todos, 'id');
+			indexed = _.indexBy(todos, 'id');
 		}
 	}
 })();

@@ -24,7 +24,7 @@ function bindTo(app, cb) {
 function setupMiddlewares(app) {
 	app.use(randomizeLatency);
 
-	app.use(multer({ dest: './uploads/' }));
+	app.use(multer({ dest: './uploads/origin' }));
 
 	app.post('/todos', TodoCtrl.create);
 
@@ -37,6 +37,8 @@ function setupMiddlewares(app) {
 	app.delete('/todos/:id', TodoCtrl.delete);
 
 	app.delete('/todos', TodoCtrl.deleteAll);
+
+	app.post('/todos/:id/files', TodoCtrl.uploadTodoFiles);
 
 	app.use('/', staticServer);
 
@@ -54,7 +56,7 @@ function readFile(path) {
 }
 
 function randomizeLatency(req, res, next) {
-	var latency = Math.random() * 500;
+	var latency = Math.random() * 300;
 
 	setTimeout(next, latency);
 }

@@ -9,10 +9,10 @@
 <body ng-cloak>
 	<div class="container">
 		<h1>Todo List</h1>
-		<div ng-controller="TodoListController as todoApp">
+		<div ng-controller="TodoAppController as todoApp">
 			<form class="form-inline" ng-submit="todoApp.create()">
 				<div class="form-group">
-					<input class="form-control" autofocus type="text" ng-model="todoApp.currentText" />
+					<input placeholder="e.g. Wash dishes" class="form-control" autofocus type="text" ng-model="todoApp.currentText" />
 					<button class="btn btn-primary btn-md">Submit</button>
 				</div>
 			</form>
@@ -20,21 +20,39 @@
 				<button role="showAll" type="button" class="btn btn-sm" ng-click="todoApp.showAll()">Show all</button>
 				<button role="showComplete" type="button" class="btn btn-sm btn-success" ng-click="todoApp.showComplete()">Show complete</button>
 				<button role="showIncomplete" type="button" class="btn btn-sm btn-warning" ng-click="todoApp.showIncomplete()">Show incomplete</button>
-				<button role="deleteAll" type="button" class="btn btn-sm btn-danger pull-right" ng-click="todoApp.deleteAll()">Delete all</button>
+				<button role="deleteAll" type="button" class="btn btn-sm btn-danger pull-right" ng-click="todoApp.deleteAll()">
+					<span class="glyphicon glyphicon-remove"></span>
+					Delete all
+				</button>
 			</div>
-			<h4 class="empty-list-title" ng-show="todoApp.isTodoListEmpty()" ng-bind="todoApp.getEmptyText()"></h4>
-			<div class="todo-item" ng-repeat="todo in todoApp.todos | filter:todoApp.isTodoVisible track by todo.id" ng-class="todoApp.getItemClassesFor(todo)">
-				<span ng-class="todo.complete ? 'complete' : 'incomplete'">{{ todo.text }}</span>
-				<div class="pull-right todo-actions">
-					<button role="attach" disabled class="btn btn-md btn-default">
-						<span class="glyphicon glyphicon-paperclip"></span>
-					</button>
-					<button role="toggleTodo" class="btn btn-md" ng-class="'btn-' + (todo.complete ? 'success' : 'default')" ng-click="todoApp.toggleComplete(todo)">
-						<span class="glyphicon glyphicon-ok"></span>
-					</button>
-					<button role="deleteTodo" class="btn btn-md btn-danger" ng-click="todoApp.remove(todo.id)">
-						<span class="glyphicon glyphicon-remove"></span>
-					</button>
+			<h5 ng-hide="todoApp.isBootstrapped">Loading...</h5>
+			<h5 class="empty-list-title" ng-show="todoApp.isBootstrappedAndEmpty()" ng-bind="todoApp.getEmptyText()"></h4>
+			<div class="todo-items">
+				<div class="todo-item" ng-repeat="todo in todoApp.todos | filter:todoApp.isTodoVisible track by todo.id" ng-class="todoApp.getCssFor(todo)">
+					<span ng-class="todo.complete ? 'complete' : 'incomplete'">{{ todo.text }}</span>
+					<div class="pull-right todo-actions">
+						<nice-file-uploader
+							on-upload="todoApp.onTodoFilesUpload"
+							name="todo-files"
+							url="todo.api.fileUpload"
+							method="post"></nice-file-uploader>
+						<button role="toggleTodo" class="btn btn-md" ng-class="'btn-' + (todo.complete ? 'success' : 'default')" ng-click="todoApp.toggleComplete(todo)">
+							<span class="glyphicon glyphicon-ok"></span>
+						</button>
+						<button role="deleteTodo" class="btn btn-md btn-danger" ng-click="todoApp.deleteOne(todo)">
+							<span class="glyphicon glyphicon-remove"></span>
+						</button>
+					</div>
+					<div class="clearfix">
+						<div class="todo-files pull-left">
+							<small ng-show="!!todo.files.length">Attachments:</small>
+							<nice-file-view
+								ng-repeat="file in todo.files"
+								type="file.type"
+								name="file.name"
+								path="file.path"></nice-file-view>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
