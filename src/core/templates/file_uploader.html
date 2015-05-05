@@ -3,7 +3,11 @@
         <small>Files to upload: {{ vm.filesToUpload }}</small>
     </span>
     <div class="btn-group">
-        <button ng-if="!!vm.filesToUpload" ng-click="vm.submit()" class="btn btn-sm btn-default">
+        <button
+            ng-disabled="vm.disableUploadBtn"
+            ng-if="!!vm.filesToUpload"
+            ng-click="vm.submit()"
+            class="btn btn-sm btn-default">
             <span class="glyphicon glyphicon-upload"></span>
             <span ng-hide="vm.isLoading" title="Upload selected files">Upload</span>
             <span ng-show="vm.isLoading">Uploading...</span>

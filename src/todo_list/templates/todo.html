@@ -2,30 +2,48 @@
     class="todo-item"
     ng-repeat="todo in vm.todos | filter:vm.isTodoVisible track by todo.id"
     ng-class="vm.getCssFor(todo)">
-    <span ng-class="todo.complete ? 'complete' : 'incomplete'">
-        {{ todo.text }}
-    </span>
-    <div class="pull-right todo-actions">
-        <nice-file-uploader
-            on-upload="vm.onTodoFilesUpload"
-            name="todo-files"
-            url="todo.api.fileUpload"
-            method="post"></nice-file-uploader>
-        <button
-            title="Mark complete"
-            role="toggleTodo"
-            class="btn btn-sm"
-            ng-class="'btn-' + (todo.complete ? 'success' : 'default')"
-            ng-click="vm.toggleComplete(todo)">
-            <span class="glyphicon glyphicon-ok"></span>
-        </button>
-        <button
-            title="Delete"
-            role="deleteTodo"
-            class="btn btn-sm btn-danger"
-            ng-click="vm.deleteOne(todo)">
-            <span class="glyphicon glyphicon-remove"></span>
-        </button>
+
+    <div class="todo-actions clearfix">
+        <div class="pull-right">
+            <nice-file-uploader
+                on-upload="vm.onTodoFilesUpload"
+                name="todo-files"
+                url="todo.api.fileUpload"
+                disable-upload-btn="todo.isEditing"
+                method="post"></nice-file-uploader>
+            <button
+                title="Mark complete"
+                role="toggleTodo"
+                class="btn btn-sm"
+                ng-disabled="todo.isEditing"
+                ng-class="'btn-' + (todo.complete ? 'success' : 'default')"
+                ng-click="vm.toggleComplete(todo)">
+                <span class="glyphicon glyphicon-ok"></span>
+            </button>
+            <button
+                title="Delete"
+                role="deleteTodo"
+                class="btn btn-sm btn-danger"
+                ng-disabled="todo.isEditing"
+                ng-click="vm.deleteOne(todo)">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+        </div>
+        <p
+            ng-hide="todo.isEditing"
+            ng-dblclick="todo.edit()"
+            ng-class="todo.complete ? 'complete' : 'incomplete'"
+            ng-bind-html="todo.html"
+            ></p>
+        <div class="todo-edit pull-left">
+            <textarea
+                class="form-control todo-edit-field"
+                ng-show="todo.isEditing"
+                ng-model="todo.text"
+                ng-keypress="todo.submit($event)"
+                cols="25"
+                rows="3"></textarea>
+        </div>
     </div>
     <div class="clearfix">
         <div class="todo-files pull-left">

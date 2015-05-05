@@ -15,7 +15,8 @@
                 url: '=',
                 method: '@',
                 name: '@',
-                onUpload: '&'
+                onUpload: '&',
+                disableUploadBtn: '='
             },
             controllerAs: 'vm',
             bindToController: true,

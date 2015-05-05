@@ -29,9 +29,10 @@ function open() {
 }
 
 function onTodoCreate(req, res, next) {
-    var text = req.body.text;
+    var text = req.body.text,
+        html = req.body.html;
 
-    TodoStorage.create(text, function (newTodo) {
+    TodoStorage.create({ text: text, html: html }, function (newTodo) {
         res.send(newTodo);
     });
 }

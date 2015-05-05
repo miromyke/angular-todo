@@ -5,9 +5,9 @@
 		.module('todoApp')
 		.controller('TodoAppController', TodoAppController);
 
-	TodoAppController.$inject = ['todoStorage'];
+	TodoAppController.$inject = ['todoStorage', '$sce'];
 
-	function TodoAppController(todoStorage) {
+	function TodoAppController(todoStorage, $sce) {
 		var vm = this,
 			indexed = {};
 
@@ -70,21 +70,30 @@
 
 			if (!text) return;
 
-			return todoStorage.create(text).then(handleTodoCreate).then(emptyInput);
+			return todoStorage
+				.create({ text: text, html: markdown.toHTML(text) })
+				.then(handleTodoCreate)
+				.then(emptyInput);
 		}
 
 		function reload(cb) {
 			var callback = cb || function () {};
 
-			return todoStorage.get().then(handleTodosReload).then(cb);
+			return todoStorage.get()
+				.then(handleTodosReload)
+				.then(cb);
 		}
 
 		function deleteOne(todo) {
-			return todoStorage.deleteOne(todo.id).then(handleTodoRemoval);
+			return todoStorage
+				.deleteOne(todo.id)
+				.then(handleTodoRemoval);
 		}
 
 		function deleteAll() {
-			return todoStorage.deleteAll().then(handleTodosRemoval);
+			return todoStorage
+				.deleteAll()
+				.then(handleTodosRemoval);
 		}
 
 		function onTodoFilesUpload(todo) {
@@ -92,7 +101,9 @@
 		}
 
 		function toggleComplete(todo) {
-			return todoStorage.update(todo.id, { complete: !todo.complete }).then(handleTodoUpdate);
+			return todoStorage
+				.update(todo.id, { complete: !todo.complete })
+				.then(handleTodoUpdate);
 		}
 
 		function getEmptyText() {
@@ -165,6 +176,8 @@
 			}
 
 			replaceTodo(id, updatedTodo);
+
+			attachTodoApi(updatedTodo);
 		}
 
 		function replaceTodo(id, updatedTodo) {
@@ -173,8 +186,6 @@
 			vm.todos.splice(vm.todos.indexOf(todo), 1, updatedTodo);
 
 			indexed[id] = updatedTodo;
-
-			attachTodoApi(updatedTodo);
 		}
 
 		function handleTodoRemoval(todo) {
@@ -210,12 +221,42 @@
 			return { active: vm.displayMode === type };
 		}
 
-		function removeTodoFile(todoId, path) {
-			todoStorage.removeTodoFile(todoId, path).then(handleTodoUpdate);
+		function attachTodoApi(todo) {
+			todo.removeFile 	= removeTodoFile.bind(null, todo);
+			todo.submit 		= submitTodo.bind(null, todo);
+			todo.edit 			= editTodo.bind(null, todo);
+			todo.html 			= typeof todo.html === 'string' ? $sce.trustAsHtml(todo.html) : todo.html;
 		}
 
-		function attachTodoApi(todo) {
-			todo.removeFile = removeTodoFile.bind(null, todo.id);
+		function removeTodoFile(todo, path) {
+			
+			return todoStorage
+				.removeTodoFile(todo.id, path)
+				.then(handleTodoUpdate);
+		}
+
+		function submitTodo(todo, $event) {
+			var finishEditing,
+				proceed = ($event.which === 10) && $event.ctrlKey;
+
+			if (!proceed) {
+				return;
+			}
+
+			finishEditing = finishTodoEditing.bind(null, todo);
+
+			return todoStorage
+				.update(todo.id, { text: todo.text, html: markdown.toHTML(todo.text) })
+				.then(handleTodoUpdate)
+				.then(finishEditing);
+		}
+
+		function editTodo(todo) {
+			todo.isEditing = true;
+		}
+
+		function finishTodoEditing(todo) {
+			todo.isEditing = false;
 		}
 	}
 })();

@@ -32,10 +32,10 @@
 				.then(parseResponse);
 		}
 
-		function create(text) {
+		function create(payload) {
 
 			return $http
-				.post(getTodoUrl(), { text: text })
+				.post(getTodoUrl(), payload)
 				.then(parseResponse);
 		}
 

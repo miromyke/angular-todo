@@ -48,12 +48,13 @@ function ensureTodosFileCreated(cb) {
     });
 }
 
-function createTodo(text, cb) {
+function createTodo(payload, cb) {
     var newTodo,
         id = uuid.v1();
 
     newTodo = {
-        text: text,
+        text: payload.text,
+        html: payload.html,
         id: id,
         complete: false,
         api: {
