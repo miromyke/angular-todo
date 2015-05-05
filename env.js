@@ -30,6 +30,7 @@ function buildDir() {
 function jsVendorSequence() {
 	return [
 		'./vendor/underscore/underscore.js',
+		'./vendor/markdown/lib/markdown.js',
 		'./vendor/jquery/dist/jquery.min.js',
 		'./vendor/jquery-form/jquery.form.js',
 		'./vendor/angular/angular.js',

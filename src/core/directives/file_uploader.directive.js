@@ -20,7 +20,7 @@
             controllerAs: 'vm',
             bindToController: true,
             controller: function noop() {},
-            templateUrl: 'src/core/file_uploader.html',
+            templateUrl: 'src/core/templates/file_uploader.html',
             link: link
         };
 
@@ -35,9 +35,9 @@
 
             vm.submit = submit;
 
-            form.ajaxForm();
-
             vm.hasFilesToUpload = hasFilesToUpload;
+
+            form.ajaxForm();
 
             function onFilesChange(e) {
                 var input = e.target,
@@ -73,10 +73,6 @@
 
                     scope.$apply();
                 });
-            }
-
-            function removeFile(file) {
-                
             }
 
             function hasFilesToUpload() {

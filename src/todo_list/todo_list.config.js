@@ -16,7 +16,7 @@
 
         $routeProvider
             .when('/', {
-                templateUrl: 'src/todo_list/todo_list.html',
+                templateUrl: 'src/todo_list/templates/app.html',
                 controller: 'TodoAppController',
                 controllerAs: 'vm'
             })

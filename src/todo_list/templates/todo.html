@@ -1,0 +1,41 @@
+<div
+    class="todo-item"
+    ng-repeat="todo in vm.todos | filter:vm.isTodoVisible track by todo.id"
+    ng-class="vm.getCssFor(todo)">
+    <span ng-class="todo.complete ? 'complete' : 'incomplete'">
+        {{ todo.text }}
+    </span>
+    <div class="pull-right todo-actions">
+        <nice-file-uploader
+            on-upload="vm.onTodoFilesUpload"
+            name="todo-files"
+            url="todo.api.fileUpload"
+            method="post"></nice-file-uploader>
+        <button
+            title="Mark complete"
+            role="toggleTodo"
+            class="btn btn-sm"
+            ng-class="'btn-' + (todo.complete ? 'success' : 'default')"
+            ng-click="vm.toggleComplete(todo)">
+            <span class="glyphicon glyphicon-ok"></span>
+        </button>
+        <button
+            title="Delete"
+            role="deleteTodo"
+            class="btn btn-sm btn-danger"
+            ng-click="vm.deleteOne(todo)">
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+    </div>
+    <div class="clearfix">
+        <div class="todo-files pull-left">
+            <small ng-show="!!todo.files.length">Attachments:</small>
+            <nice-file-view
+                ng-repeat="file in todo.files"
+                type="file.type"
+                name="file.name"
+                path="file.path"
+                on-remove="todo.removeFile"></nice-file-view>
+        </div>
+    </div>
+</div>

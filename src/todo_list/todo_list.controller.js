@@ -17,6 +17,12 @@
 
 		vm.todos = [];
 
+		vm.todoListTmpl = 'src/todo_list/templates/list.html';
+
+		vm.todoItemTmpl = 'src/todo_list/templates/todo.html';
+
+		vm.todoTabsTmpl = 'src/todo_list/templates/tabs.html';
+
 		vm.currentText = '';
 
 		vm.displayMode = 'all';
@@ -40,6 +46,8 @@
 		vm.onTodoFilesUpload = onTodoFilesUpload;
 
 		vm.isEmpty = isEmpty;
+
+		vm.getTabCss = getTabCss;
 
 		vm.showAll = function () {
 			vm.displayMode = 'all';
@@ -145,7 +153,7 @@
 
 			indexed[newTodo.id] = newTodo;
 
-			return newTodo;
+			attachTodoApi(newTodo);
 		}
 
 		function handleTodoUpdate(updatedTodo) {
@@ -165,6 +173,8 @@
 			vm.todos.splice(vm.todos.indexOf(todo), 1, updatedTodo);
 
 			indexed[id] = updatedTodo;
+
+			attachTodoApi(updatedTodo);
 		}
 
 		function handleTodoRemoval(todo) {
@@ -192,6 +202,20 @@
 			vm.todos = todos;
 
 			indexed = _.indexBy(todos, 'id');
+
+			todos.forEach(attachTodoApi);
+		}
+
+		function getTabCss(type) {
+			return { active: vm.displayMode === type };
+		}
+
+		function removeTodoFile(todoId, path) {
+			todoStorage.removeTodoFile(todoId, path).then(handleTodoUpdate);
+		}
+
+		function attachTodoApi(todo) {
+			todo.removeFile = removeTodoFile.bind(null, todo.id);
 		}
 	}
 })();

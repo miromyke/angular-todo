@@ -4,7 +4,7 @@ var express 	= require('express'),
 	PORT,
 	TodoApp;
 
-TodoApp = require('./backend/todo_app');
+TodoApp = require('./backend/src/todo.app');
 
 PORT = 8000;
 

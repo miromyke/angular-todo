@@ -13,11 +13,12 @@
 			create: create,
 			deleteOne: deleteOne,
 			deleteAll: deleteAll,
-			update: update
+			update: update,
+			removeTodoFile: removeTodoFile
 		}
 
 		function get(id) {
-			var url = getUrl(id);
+			var url = getTodoUrl(id);
 
 			return $http
 				.get(url)
@@ -34,33 +35,47 @@
 		function create(text) {
 
 			return $http
-				.post(getUrl(), { text: text })
+				.post(getTodoUrl(), { text: text })
 				.then(parseResponse);
 		}
 
 		function deleteOne(id) {
 
 			return $http
-				.delete(getUrl(id))
+				.delete(getTodoUrl(id))
 				.then(parseResponse);
 		}
 
 		function deleteAll() {
 
 			return $http
-				.delete(getUrl())
+				.delete(getTodoUrl())
 				.then(parseResponse);
 		}
 
 		function update(id, data) {
 
 			return $http
-				.put(getUrl(id), data)
+				.put(getTodoUrl(id), data)
 				.then(parseResponse);
 		}
 
-		function getUrl(id) {
+		function removeTodoFile(id, filePath) {
+			return $http
+				.delete(getTodoFilesUrl(id), {
+					params: {
+						filePath: filePath
+					}
+				})
+				.then(parseResponse);
+		}
+
+		function getTodoUrl(id) {
 			return '/todos' + (id ? '/' + id : '');
+		}
+
+		function getTodoFilesUrl(id) {
+			return '/todos/' + id + '/files';
 		}
 	}
 

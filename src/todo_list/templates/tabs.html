@@ -1,0 +1,17 @@
+<ul class="nav nav-tabs todo-tabs">
+    <li ng-class="vm.getTabCss('all')"
+        role="showAll"
+        ng-click="vm.showAll()">
+        <a href="#">All</a>
+    </li>
+    <li ng-class="vm.getTabCss('complete')"
+        role="showComplete"
+        ng-click="vm.showComplete()">
+        <a href="#">Complete</a>
+    </li>
+    <li ng-class="vm.getTabCss('incomplete')"
+        role="showIncomplete"
+        ng-click="vm.showIncomplete()">
+        <a href="#">Incomplete</a>
+    </li>
+</ul>

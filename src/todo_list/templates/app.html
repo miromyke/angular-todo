@@ -1,0 +1,26 @@
+<form class="form-main form-inline" ng-submit="vm.create()">
+    <div class="form-group">
+        <input
+            autofocus
+            type="text"
+            class="form-control"
+            placeholder="e.g. Wash dishes"
+            ng-model="vm.currentText">
+        <button
+            role="createTodo"
+            class="btn btn-md {{ 'btn-' + (vm.currentText ? 'success' : 'default') }}">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </button>
+    </div>
+</form>
+<button
+    role="deleteAll"
+    type="button"
+    class="btn btn-sm btn-danger pull-right"
+    ng-click="vm.deleteAll()"
+    ng-hide="vm.isEmpty()">
+    <span class="glyphicon glyphicon-remove"></span>
+    Delete all
+</button>
+<ng-include src="vm.todoTabsTmpl"></ng-include>
+<ng-include src="vm.todoListTmpl"></ng-include>

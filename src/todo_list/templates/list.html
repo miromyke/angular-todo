@@ -1,0 +1,5 @@
+<div class="todo-items" ng-include="vm.todoItemTmpl"></div>
+<div class="text-center empty-list-placeholder">
+    <small ng-hide="vm.isBootstrapped">Loading...</small>
+    <small ng-show="vm.isBootstrappedAndEmpty()" ng-bind="vm.getEmptyText()"></small>
+</div>
