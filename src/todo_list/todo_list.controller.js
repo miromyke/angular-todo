@@ -98,6 +98,8 @@
 
 		function onTodoFilesUpload(todo) {
 			replaceTodo(todo.id, todo);
+
+			attachTodoApi(todo);
 		}
 
 		function toggleComplete(todo) {
