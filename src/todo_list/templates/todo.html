@@ -46,7 +46,7 @@
         <div class="todo-files pull-left">
             <small ng-show="!!todo.files.length">Attachments:</small>
             <nice-file-view
-                ng-repeat="file in todo.files"
+                ng-repeat="file in todo.files track by file.path"
                 type="file.type"
                 name="file.name"
                 path="file.path"
