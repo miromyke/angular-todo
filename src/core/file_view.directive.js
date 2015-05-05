@@ -21,11 +21,11 @@
         }
 
         function link(scope, el) {
-            var type = scope.vm.type;
-
             scope.vm.getTemplate = getTemplate;
 
             function getTemplate() {
+                var type = scope.vm.type;
+
                 return 'src/core/file_view/' + (type || 'default') + '.html';
             }
         }

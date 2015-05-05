@@ -1,20 +1,39 @@
-<div class="actions form-group">
-    <button role="showAll" type="button" class="btn btn-sm" ng-click="vm.showAll()">Show all</button>
-    <button role="showComplete" type="button" class="btn btn-sm btn-success" ng-click="vm.showComplete()">Show complete</button>
-    <button role="showIncomplete" type="button" class="btn btn-sm btn-warning" ng-click="vm.showIncomplete()">Show incomplete</button>
-    <button role="deleteAll" type="button" class="btn btn-sm btn-danger pull-right" ng-click="vm.deleteAll()">
-        <span class="glyphicon glyphicon-remove"></span>
-        Delete all
-    </button>
-</div>
-<form class="form-inline" ng-submit="vm.create()">
+<form class="form-main form-inline" ng-submit="vm.create()">
     <div class="form-group">
-        <input placeholder="e.g. Wash dishes" class="form-control" autofocus type="text" ng-model="vm.currentText" />
-        <button class="btn btn-primary btn-md">Submit</button>
+        <input
+            type="text"
+            ng-model="vm.currentText"
+            class="form-control"
+            autofocus
+            placeholdeer="e.g. Wash dishes">
+        <button role="createTodo" class="btn btn-default btn-md">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </button>
     </div>
 </form>
-<h5 ng-hide="vm.isBootstrapped">Loading...</h5>
-<h5 class="empty-list-title" ng-show="vm.isBootstrappedAndEmpty()" ng-bind="vm.getEmptyText()"></h4>
+<button
+    role="deleteAll"
+    type="button"
+    class="btn btn-sm btn-danger pull-right"
+    ng-click="vm.deleteAll()"
+    ng-hide="vm.isEmpty()">
+    <span class="glyphicon glyphicon-remove"></span>
+    Delete all
+</button>
+<ul class="nav nav-tabs todo-tabs">
+    <li class="{{ vm.displayMode === 'all' && 'active' }}" role="showAll" ng-click="vm.showAll()">
+        <a href="#">All</a>
+    </li>
+    <li ng-class="vm.displayMode === 'complete' && 'active'" role="showComplete" ng-click="vm.showComplete()">
+        <a href="#">Complete</a>
+    </li>
+    <li ng-class="vm.displayMode === 'incomplete' && 'active'" role="showIncomplete"ng-click="vm.showIncomplete()">
+        <a href="#">Incomplete</a>
+    </li>
+</ul>
+<div class="text-center">
+    <small ng-hide="vm.isBootstrapped">Loading...</small><small ng-show="vm.isBootstrappedAndEmpty()" ng-bind="vm.getEmptyText()"></small>
+</div>
 <div class="todo-items">
     <div class="todo-item" ng-repeat="todo in vm.todos | filter:vm.isTodoVisible track by todo.id" ng-class="vm.getCssFor(todo)">
         <span ng-class="todo.complete ? 'complete' : 'incomplete'">{{ todo.text }}</span>

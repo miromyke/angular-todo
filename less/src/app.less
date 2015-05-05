@@ -8,6 +8,14 @@
 	-moz-border-radius: @data;
 }
 
+.form-main {
+	margin-top: 15px;
+
+	[role=createTodo] {
+		vertical-align: top;
+	}
+}
+
 .todo-items {
 	margin-top: 10px;
 }
@@ -26,23 +34,16 @@
 		background-color: #FFF3C3;
 	}
 
-	&.incomplete {
+	nice-file-uploader {
+		display: inline-block;
 	}
 
-	&.ng-leave,
 	&.ng-enter {
 		.animated;
 	}
 
-	&.ng-leave-active {
-		.bounceOutRight;
-	}
 	&.ng-enter-active {
 		.bounceInLeft;
-	}
-
-	nice-file-uploader {
-		display: inline-block;
 	}
 
 	.todo-files {
@@ -62,30 +63,8 @@
 	}
 }
 
-.empty-list-title {
-	&.ng-hide-remove,
-	&.ng-hide-add,
-	&.ng-leave {
-		.animated;
-	}
-
-	&.ng-hide-add-active {
-		.bounceOutRight;
-	}
-
-	&.ng-hide-remove-active {
-		.bounceInLeft;
-	}
-}
-
-.actions {
-	.btn {
-		margin-left: 5px;
-
-		&:first-child {
-			margin-left: 0;
-		}
-	}
+.todo-tabs {
+	margin-top: 10px;
 }
 
 .file-uploader-form {

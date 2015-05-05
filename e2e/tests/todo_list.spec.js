@@ -160,11 +160,11 @@ describe('Todo App', function () {
 	}
 
 	function getTodos() {
-		return element.all(by.repeater('todo in todoApp.todos'));
+		return element.all(by.repeater('todo in vm.todos'));
 	}
 
 	function getInput() {
-		return element(by.model('todoApp.currentText'));
+		return element(by.model('vm.currentText'));
 	}
 
 	function hasClass(element, klass) {

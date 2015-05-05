@@ -39,6 +39,8 @@
 
 		vm.onTodoFilesUpload = onTodoFilesUpload;
 
+		vm.isEmpty = isEmpty;
+
 		vm.showAll = function () {
 			vm.displayMode = 'all';
 		}
