@@ -30,10 +30,9 @@
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
             </div>
-            <div class="todo-edit pull-left">
+            <div ng-show="todo.isEditing" class="todo-edit pull-left">
                 <textarea
                     class="form-control"
-                    ng-show="todo.isEditing"
                     ng-model="todo.text"
                     ng-keypress="todo.submit($event)"
                     cols="25"
