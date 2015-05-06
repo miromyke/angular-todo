@@ -1,4 +1,7 @@
 <div class="{{ 'file-' + vm.type }}">
     <ng-include src="vm.template"></ng-include>
-    <span ng-click="vm.remove()" class="glyphicon glyphicon-remove btn-remove-file btn-danger"></span>
+    <span
+        ng-show="vm.isEditable"
+        ng-click="vm.remove()"
+        class="glyphicon glyphicon-remove btn-remove-file btn-danger"></span>
 </div>

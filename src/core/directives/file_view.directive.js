@@ -15,7 +15,8 @@
                 type: '=',
                 name: '=',
                 path: '=',
-                onRemove: '&'
+                onRemove: '&',
+                isEditable: '='
             },
             controller: FileViewController,
             templateUrl: 'src/core/templates/file_view/base.html'
