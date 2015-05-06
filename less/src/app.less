@@ -9,26 +9,32 @@
 }
 
 .form-main {
+	width: 50%;
 	margin-top: 15px;
+	float: left;
 
 	[role=createTodo] {
 		vertical-align: top;
+	}
+}
 
-		&.glow-green {
-			color: #fff;
-		}
+.app-toolbar {
+	width: 50%;
+	.clearfix;
+	float: right;
+
+	.todo-tabs {
+		float: right;
 	}
 }
 
 .todo-item {
 	padding: 5px 10px;
-	margin-top: 5px;
+	margin-top: 20px;
 	.clearfix;
-	.borderRadius(3px);
-
-	&:first-child {
-		margin-top: 0;
-	}
+	border-left: 4px solid #ddd;
+	border-top: 1px solid #ddd;
+	.borderRadius(3px 0 0 0);
 
 	&.complete {
 		background-color: #FFF3C3;
@@ -113,14 +119,7 @@
 	padding: 5px;
 }
 
-@-webkit-keyframes greenPulse {
-  from { background-color: #749a02; -webkit-box-shadow: 0 0 9px #333; }
-  50% { background-color: #91bd09; -webkit-box-shadow: 0 0 18px #91bd09; }
-  to { background-color: #749a02; -webkit-box-shadow: 0 0 9px #333; }
-}
-
-.glow-green {
-  -webkit-animation-name: greenPulse;
-  -webkit-animation-duration: 2s;
-  -webkit-animation-iteration-count: infinite;
+.todo-list-toolbar {
+	padding-top: 15px;
+	.clearfix;
 }

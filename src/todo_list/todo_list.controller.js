@@ -49,17 +49,9 @@
 
 		vm.getTabCss = getTabCss;
 
-		vm.showAll = function () {
-			vm.displayMode = 'all';
-		}
+		vm.requestDeleteAll = requestDeleteAll;
 
-		vm.showComplete = function () {
-			vm.displayMode = 'complete';
-		}
-
-		vm.showIncomplete = function () {
-			vm.displayMode = 'incomplete';
-		}
+		vm.cancelDeleteAll = cancelDeleteAll;
 
 		function boot() {
 			vm.isBootstrapped = true;
@@ -93,7 +85,16 @@
 		function deleteAll() {
 			return todoStorage
 				.deleteAll()
-				.then(handleTodosRemoval);
+				.then(handleTodosRemoval)
+				.then(cancelDeleteAll);
+		}
+
+		function requestDeleteAll() {
+			vm.isDeletingAll = true;
+		}
+
+		function cancelDeleteAll() {
+			vm.isDeletingAll = false;
 		}
 
 		function onTodoFilesUpload(todo) {
@@ -239,7 +240,11 @@
 
 		function submitTodo(todo, $event) {
 			var finishEditing,
-				proceed = ($event.which === 10) && $event.ctrlKey;
+				proceed;
+
+			proceed = $event
+				? ($event.which === 10) && $event.ctrlKey
+				: true;
 
 			if (!proceed) {
 				return;

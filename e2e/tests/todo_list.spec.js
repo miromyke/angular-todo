@@ -144,19 +144,23 @@ describe('Todo App', function () {
 	}
 
 	function deleteAll() {
-		element(by.css('[role="deleteAll"]')).click();
+		element(by.css('[role="deleteAll"]')).click().click();
+	}
+
+	function getTabButtons() {
+		return element(by.model('vm.displayMode'));
 	}
 
 	function showAll() {
-		element(by.css('[role="showAll"]')).click();
+		getTabButtons().element(by.css('[value="all"]'));
 	}
 
 	function showComplete() {
-		element(by.css('[role="showComplete"]')).click();
+		getTabButtons().element(by.css('[value="complete"]'));
 	}
 
 	function showIncomplete() {
-		element(by.css('[role="showIncomplete"]')).click();
+		getTabButtons().element(by.css('[value="incomplete"]'));
 	}
 
 	function getTodos() {

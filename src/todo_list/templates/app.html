@@ -1,26 +1,25 @@
-<form class="form-main form-inline" ng-submit="vm.create()">
-    <div class="form-group">
-        <input
-            autofocus
-            type="text"
-            class="form-control"
-            placeholder="e.g. Wash dishes"
-            ng-model="vm.currentText">
-        <button
-            role="createTodo"
-            class="btn btn-md btn-default {{ vm.currentText && 'glow-green' }}">
-            <span class="glyphicon glyphicon-pencil"></span>
-        </button>
+<h2>TODO Notes</h2>
+<div class="clearfix">
+    <form class="form-main form-inline" ng-submit="vm.create()">
+        <div class="form-group">
+            <input
+                autofocus
+                type="text"
+                class="form-control"
+                placeholder="e.g. Wash dishes"
+                ng-model="vm.currentText">
+            <button
+                ng-disabled="!vm.currentText"
+                role="createTodo"
+                class="btn btn-md btn-default {{ vm.currentText && 'btn-info' }}">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </button>
+        </div>
+    </form>
+
+    <div class="app-toolbar" ng-show="vm.todos.length">
+        <div class="todo-tabs" ng-include="vm.todoTabsTmpl"></div>
     </div>
-</form>
-<button
-    role="deleteAll"
-    type="button"
-    class="btn btn-sm btn-danger pull-right"
-    ng-click="vm.deleteAll()"
-    >
-    <span class="glyphicon glyphicon-remove"></span>
-    Delete all
-</button>
-<ng-include src="vm.todoTabsTmpl"></ng-include>
-<ng-include src="vm.todoListTmpl"></ng-include>
+</div>
+
+<div class="todo-list" ng-include="vm.todoListTmpl"></div>

@@ -1,5 +1,26 @@
+<div class="todo-list-toolbar">
+	<div class="btn-group-sm pull-right">
+		<button
+			ng-show="vm.todos.length"
+		    role="deleteAll"
+		    type="button"
+		    class="btn btn-md {{ vm.isDeletingAll ? 'btn-danger' : 'btn-default' }}"
+		    ng-click="vm.isDeletingAll ? vm.deleteAll() : vm.requestDeleteAll()">
+		    <span class="glyphicon {{ vm.isDeletingAll ? 'glyphicon-ok' : 'glyphicon-remove' }}"></span>
+		    <span ng-hide="vm.isDeletingAll">Delete all</span>
+		    <span ng-show="vm.isDeletingAll">Delete all todos? ({{ vm.todos.length }} total)</span>
+		</button>
+		<button
+			ng-if="vm.isDeletingAll"
+			class="btn btn-md btn-default"
+			ng-click="vm.cancelDeleteAll()">
+			Nevermind
+		</button>
+	</div>
+</div>
+
 <div class="todo-items" ng-include="vm.todoItemTmpl"></div>
-<div class="text-center empty-list-placeholder">
+<div class="empty-list-placeholder">
     <small ng-hide="vm.isBootstrapped">Loading...</small>
     <small ng-show="vm.isBootstrappedAndEmpty()" ng-bind="vm.getEmptyText()"></small>
 </div>

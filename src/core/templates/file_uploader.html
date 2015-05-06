@@ -1,7 +1,5 @@
 <form class="file-uploader-form" method="{{ vm.method }}" action="{{ vm.url }}" enctype="multipart/form-data">
-    <span ng-show="!!vm.filesToUpload">
-        <small>Files to upload: {{ vm.filesToUpload }}</small>
-    </span>
+    <small ng-show="!!vm.filesToUpload">Files to upload: {{ vm.filesToUpload }}</small>
     <div class="btn-group">
         <button
             ng-disabled="vm.disableUploadBtn"
