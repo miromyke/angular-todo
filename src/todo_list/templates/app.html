@@ -8,7 +8,7 @@
             ng-model="vm.currentText">
         <button
             role="createTodo"
-            class="btn btn-md {{ 'btn-' + (vm.currentText ? 'success' : 'default') }}">
+            class="btn btn-md btn-default {{ vm.currentText && 'glow-green' }}">
             <span class="glyphicon glyphicon-pencil"></span>
         </button>
     </div>
